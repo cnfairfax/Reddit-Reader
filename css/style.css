@@ -1,7 +1,8 @@
 a {
     display: flex;
-    min-width: 25%;
+    min-width: 100%;
     min-height: 500px;
+    
     align-items: center;
     justify-content: center;
     background-repeat: no-repeat;
@@ -16,4 +17,5 @@ a {
 h2 {
     text-align: center;
     padding: 20px;
+    margin: 0;
 }
