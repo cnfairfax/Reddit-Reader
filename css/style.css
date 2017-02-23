@@ -1,0 +1,19 @@
+a {
+    display: flex;
+    min-width: 25%;
+    min-height: 500px;
+    align-items: center;
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    text-decoration: none;
+    color: #cdcdcd;
+    font-family: 'Merriweather', serif;
+    font-weight: 900;
+}
+
+h2 {
+    text-align: center;
+    padding: 20px;
+}
