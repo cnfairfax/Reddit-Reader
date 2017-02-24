@@ -26,9 +26,11 @@ $(document).ready(function(){
                     var t = (Math.random() * 10) + 1;
                     t = Math.floor(t);
                     const card = "card" + i;
-                    const cardId = '#' + card;                      
+                    const cardId = '#' + card;
+                    const info = $('.info');
+                    const infoCard = cardId + ' ' + info;
                     if(v.data.preview) {
-					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card" id="card' + i + '"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
+					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card" id="card' + i + '"><div class="info"><h2>' + v.data.title + '</h2><div>');
                     } else {
                         content.append('<a target="_blank" href="' + v.data.url + '" class="post-card" id="' + card + '"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
                         $(cardId).addClass('background' + t);
@@ -37,6 +39,9 @@ $(document).ready(function(){
                     if(v.data.over_18 || v.data.spoiler) {
                         $(cardId).addClass('blur');
                     }
+                    
+                    $(cardId + ' .info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a></p><p class="score">' + v.data.score + '</p></div>');
+                    
 				});
                 console.log(json.data.children);
 			}

@@ -40,15 +40,42 @@ body, body .content {
 
 .info {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 20px;
     background: rgba(30,50,70,0.35);
     min-width: 100%;
-    height: 100%;
     border-radius: 5px;
     transition: all 0.5s ease;
+}
+
+.info .post-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid;
+    min-width: 100%;
+    font-family: 'Merriweather', serif;
+    font-weight: 300;
+}
+
+.post-data .score {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 900;
+}
+
+.info a {
+    text-decoration: none;
+    color: #dedede;
+    line-height: 2em;
+    transition: all .2s ease;
+}
+
+.info a:hover {
+    color: #ccc;
+    text-decoration: underline;
 }
 
 .blur {
@@ -61,41 +88,41 @@ h2 {
 }
 
 .background1 {
-    background-color: #009688;
+    background: linear-gradient(25deg, #009688, #ffc107);
 }
 
 .background2 {
-    background-color: #ffc107;
+    background: linear-gradient(25deg, #ffc107, #00bcd4);
 }
 
 .background3 {
-    background-color: #00bcd4;
+    background: linear-gradient(25deg, #00bcd4, #cddc39);
 }
 
 .background4 {
-    background-color: #cddc39;
+    background: linear-gradient(25deg, #cddc39, #673ab7);
 }
 
 .background5 {
-    background-color: #673ab7;
+    background: linear-gradient(25deg, #673ab7, #9c27b0);
 }
 
 .background6 {
-    background-color: #9c27b0;
+    background: linear-gradient(25deg, #9c27b0, #e91e63);
 }
 
 .background7 {
-    background-color: #e91e63;
+    background: linear-gradient(25deg, #e91e63, #4caf50);
 }
 
 .background8 {
-    background-color: #4caf50;
+    background: linear-gradient(25deg, #4caf50, #ff5722);
 }
 
 .background9 {
-    background-color: #ff5722;
+    background: linear-gradient(25deg, #ff5722, #795548);
 }
 
 .background10 {
-    background-color: #795548;
+    background: linear-gradient(25deg, #795548, #009688);
 }
