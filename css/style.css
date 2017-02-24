@@ -9,6 +9,10 @@ body, body .content {
     flex-wrap: wrap;
 }
 
+body .content {
+    margin-bottom: 88px;
+}
+
 h2 {
     font-weight: 400;
 }
