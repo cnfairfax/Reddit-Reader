@@ -29,6 +29,14 @@ $(document).ready(function(){
                     const cardId = '#' + card;
                     const info = $('.info');
                     const infoCard = cardId + ' ' + info;
+                    const length = json.data.children.length;
+                    const nthChild = function() {
+                        if(length%9 == 0) {
+                            return 9;
+                        }
+                    }
+                    
+                    console.log(nthChild);
                     if(v.data.preview) {
                         /*if(v.data.spoiler){
                             content.append('<a target="_blank" href="" class="post-card" id="card' + i + '"><div class="info"><h2>SPOILER</h2><div>');
@@ -48,7 +56,8 @@ $(document).ready(function(){
                     $(cardId + ' .info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a></p><p class="score">' + v.data.score + '</p></div>');
                     
 				});
-                console.log(json.data.children);
+                console.log(json.data);
+                console.log(json.data.children.length);
 			}
             
 		}

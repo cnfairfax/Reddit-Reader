@@ -10,7 +10,8 @@ body, body .content {
 }
 
 body .content {
-    margin-bottom: 88px;
+    width: 85%;
+    margin-left: 15%;
 }
 
 h2 {
@@ -19,11 +20,11 @@ h2 {
 
 /* Nav/Header */
 header {
-    position: fixed;
-    bottom: 0;
     background: #333;
-    width: 100%;
-    padding-bottom: 20px;
+    position: fixed;
+    width: 15%;
+    padding-top: 20px;
+    height: 100%;
 }
 
 nav {
@@ -36,10 +37,10 @@ nav {
 nav ul {
     list-style: none;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding-left: 0;
-    width: 50%;
 }
 
 /* Post Cards */
