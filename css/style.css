@@ -46,7 +46,6 @@ nav ul {
 /* Post Cards */
 .post-card {
     display: flex;
-    width: 50%;
     height: 500px;
     align-items: flex-end;
     justify-content: center;
@@ -62,8 +61,12 @@ nav ul {
     transition: all 0.5s ease;
 }
 
-.post-card:nth-child(3n + 1) {
+.full-width {
     width: 100%;
+}
+
+.half-width {
+    width: 50%;
 }
 
 .post-card:hover {
