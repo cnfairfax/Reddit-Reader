@@ -3,23 +3,34 @@ $(document).ready(function(){
     const navList = $('nav ul');
 	const content = $('body .content');
     var subreddits = {
+        all: {
+            name: '/r all',
+            url: 'https://www.reddit.com/r/all.json'
+        },
         pics: {
-            name: 'pics'
+            name: '/r pics',
+            url: 'https://www.reddit.com/r/pics.json'
         },
         aww: {
-            name: 'aww'
+            name: '/r aww',
+            url: 'https://www.reddit.com/r/aww.json'
         },
         gifs: {
-            name: 'gifs'
+            name: '/r gifs',
+            url: 'https://www.reddit.com/r/gifs.json'
+        },
+        blackpeopltwitter: {
+            name: '/r blackpeopletwitter',
+            url: 'https://www.reddit.com/r/blackpeopletwitter.json'
         }
     };
     
     $.each(subreddits, function(n, p) {
-        navList.append('<li>' + p.name + '</li>')
+        navList.append('<li id="anchor' + n + '">' + p.name + '</li>');
     });
     
 	$.ajax({
-		url: 'https://www.reddit.com/r/' + subreddits.pics.name + '.json',
+		url: 'https://www.reddit.com/r/all.json',
 		success: function(json) {
 			if(json.data){
 				$.each(json.data.children, function(i, v) {
@@ -31,7 +42,7 @@ $(document).ready(function(){
                     const infoCard = cardId + ' ' + info;
                     const length = json.data.children.length;
                     const nthChild = (function() {
-                        if (length%11 ==0) {
+                        if (length%11 == 0) {
                             return 11;
                         }
                         else if (length%7 == 0) {
@@ -43,15 +54,16 @@ $(document).ready(function(){
                         else if (length%3 == 0) {
                             return 3;
                         }
-                        else {
+                        else if (length%2 == 0){
                             return 2;
+                        }
+                        else {
+                            return 1;
                         }
                     })();
                     
-                    console.log(nthChild);
-                    
                     if(v.data.preview) {
-                        /*if(v.data.spoiler){
+                        /*if(v.data.spoiler || v.data.nsfw){
                             content.append('<a target="_blank" href="" class="post-card" id="card' + i + '"><div class="info"><h2>SPOILER</h2><div>');
                             $(cardId).addClass('background' + t);
                             $(cardId).click(function() {
@@ -70,15 +82,19 @@ $(document).ready(function(){
                     
                     if(nthChild == 2) {
                         $(cardId).addClass('half-width');
-                    } else if(i%nthChild == 0) {
+                    } 
+                    else if(nthChild == 1) {
                         $(cardId).addClass('full-width');
-                    } else {
+                    } 
+                    else if(i%nthChild == 0) {
+                        $(cardId).addClass('full-width');
+                    } 
+                    else {
                         $(cardId).addClass('half-width');
                     }
                     
 				});
                 console.log(json.data);
-                console.log(json.data.children.length);
 			}
             
 		}
