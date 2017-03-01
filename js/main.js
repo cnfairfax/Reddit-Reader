@@ -1,38 +1,42 @@
 $(document).ready(function(){ 
-    const header = $('header');
-    const navList = $('nav ul');
-	const content = $('body .content');
-    var subreddits = [
-        {
-            name: '/r all',
-            url: 'https://www.reddit.com/r/all.json'
-        },
-        {
-            name: '/r pics',
-            url: 'https://www.reddit.com/r/pics.json'
-        },
-        {
-            name: '/r aww',
-            url: 'https://www.reddit.com/r/aww.json'
-        },
-        {
-            name: '/r gifs',
-            url: 'https://www.reddit.com/r/gifs.json'
-        },
-        {
-            name: '/r blackpeopletwitter',
-            url: 'https://www.reddit.com/r/blackpeopletwitter.json'
-        }
+    const subreddits = [
+        'all',
+        'pics',
+        'aww',
+        'gifs',
+        'blackpeopletwitter'
     ];
+
+    const navList = $('nav ul');
     
     $.each(subreddits, function(n, p) {
-        navList.append('<li id="anchor' + n + '">' + p.name + '</li>');
+        navList.append('<li data-reddit="' + p + '" class="navigation">' + render(p).name + '</li>');
+    });
+
+    $('.navigation').click(function(){
+        request($(this).data('reddit'));
     });
     
-	$.ajax({
-		url: 'https://www.reddit.com/r/all.json',
+	request('all');
+});
+
+var render = function(sub) {
+    return {
+        name: '/r ' + sub,
+        url: 'https://www.reddit.com/r/' + sub + '.json'
+    };
+}
+
+var request = function(sub) {
+
+    const header = $('header');
+    const content = $('body .content');
+
+    $.ajax({
+		url: render(sub).url,
 		success: function(json) {
 			if(json.data){
+                content.empty();
 				$.each(json.data.children, function(i, v) {
                     var t = (Math.random() * 10) + 1;
                     t = Math.floor(t);
@@ -99,4 +103,4 @@ $(document).ready(function(){
             
 		}
 	})
-});
+}

@@ -43,6 +43,12 @@ nav ul {
     padding-left: 0;
 }
 
+.navigation {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
 /* Post Cards */
 .post-card {
     display: flex;
