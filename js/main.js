@@ -2,28 +2,28 @@ $(document).ready(function(){
     const header = $('header');
     const navList = $('nav ul');
 	const content = $('body .content');
-    var subreddits = {
-        all: {
+    var subreddits = [
+        {
             name: '/r all',
             url: 'https://www.reddit.com/r/all.json'
         },
-        pics: {
+        {
             name: '/r pics',
             url: 'https://www.reddit.com/r/pics.json'
         },
-        aww: {
+        {
             name: '/r aww',
             url: 'https://www.reddit.com/r/aww.json'
         },
-        gifs: {
+        {
             name: '/r gifs',
             url: 'https://www.reddit.com/r/gifs.json'
         },
-        blackpeopltwitter: {
+        {
             name: '/r blackpeopletwitter',
             url: 'https://www.reddit.com/r/blackpeopletwitter.json'
         }
-    };
+    ];
     
     $.each(subreddits, function(n, p) {
         navList.append('<li id="anchor' + n + '">' + p.name + '</li>');
