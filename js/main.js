@@ -1,4 +1,13 @@
 $(document).ready(function(){ 
+    /*$.ajax ({
+        url: 'https://www.reddit.com/user/pmmeyourtomatoes.json',
+        success: function(json) {
+            $.each(json.data.children, function(i, v) {
+                console.table(v);
+            });
+        }
+    })*/
+    
     const subreddits = [
         'all',
         'pics',
@@ -17,7 +26,7 @@ $(document).ready(function(){
         request($(this).data('reddit'));
     });
     
-	request('all');
+	request(subreddits[0]);
 });
 
 var render = function(sub) {
@@ -42,6 +51,7 @@ var request = function(sub) {
                     t = Math.floor(t);
                     const card = "card" + i;
                     const cardId = '#' + card;
+                    const cardQuery = $(cardId);
                     const info = $('.info');
                     const infoCard = cardId + ' ' + info;
                     const length = json.data.children.length;
@@ -67,16 +77,7 @@ var request = function(sub) {
                     })();
                     
                     if(v.data.preview) {
-                        /*if(v.data.spoiler || v.data.nsfw){
-                            content.append('<a target="_blank" href="" class="post-card" id="card' + i + '"><div class="info"><h2>SPOILER</h2><div>');
-                            $(cardId).addClass('background' + t);
-                            $(cardId).click(function() {
-                                $('.info').append('<h2>' + v.data.title + '</h2>');
-                                $('.post-card').attr('href', v.data.url);
-                                $('.post-card').attr('style', 'background: url(' + v.data.preview.images[0].source.url + ');');
-                            });
-                        }*/
-					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card" id="card' + i + '"><div class="info"><h2>' + v.data.title + '</h2><div>');
+					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card" id="card' + i + '"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
                     } else {
                         content.append('<a target="_blank" href="' + v.data.url + '" class="post-card" id="' + card + '"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
                         $(cardId).addClass('background' + t);
@@ -97,6 +98,19 @@ var request = function(sub) {
                         $(cardId).addClass('half-width');
                     }
                     
+                    if(v.data.spoiler || v.data.nsfw) {
+                        $(cardId).addClass('spoiler-nsfw');
+                        if(v.data.spoiler) {
+                            $(cardId).append('<a href="" class="card-cover spoiler"><p>SPOILER!</p></a>');
+                        } else {
+                            $(cardId).append('<a href="" class="card-cover nsfw"><p>NSGW!</p></a>');
+                        }
+                        $('a.card-cover').click(function(e) {
+                             e.preventDefault(); 
+                            /*$(this).hasClass('hidden').removeClass('hidden');*/
+                            $(this).addClass('hidden');
+                         });
+                    }
 				});
                 console.log(json.data);
 			}
