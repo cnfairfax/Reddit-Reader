@@ -3,6 +3,10 @@
     box-sizing: border-box;
 }
 
+body {
+    height: 100%;
+}
+
 body, body .content {
     margin: 0;
     display: flex;
@@ -12,6 +16,7 @@ body, body .content {
 body .content {
     width: 85%;
     margin-left: 15%;
+    overflow-y: auto;
 }
 
 h2 {

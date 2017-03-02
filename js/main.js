@@ -1,4 +1,29 @@
-$(document).ready(function(){ 
+$.fn.extend({
+    do: function(callback){
+		return (this.length ? callback : $.noop).call(this, this) || this;
+	},
+    fire: function(event){
+		return this.trigger(event);
+	}
+});
+
+document.addEventListener('scroll', function (e){
+	$(e.target).fire('event-scroll');
+}, true);
+
+$(document).on('event-scroll', function(e) {
+    $(e.target).do(function(){
+        if (Math.ceil(this.scrollTop() + this.height()) >= this.get(0).scrollHeight){
+            var page = $(document).data('page', $(document).data('page') + 1);
+            request(page);
+        }
+    })
+})
+
+$(document).ready(function(){
+
+    $(document).data('page', 0);
+
     const subreddits = [
         'all',
         'pics',
@@ -10,14 +35,17 @@ $(document).ready(function(){
     const navList = $('nav ul');
     
     $.each(subreddits, function(n, p) {
-        navList.append('<li data-reddit="' + p + '" class="navigation">' + render(p).name + '</li>');
+        navList.append('<li data-reddit="' + p + '" class="navigation' + (n == 0 ? ' selected' : '') + '">' + render(p).name + '</li>');
     });
 
     $('.navigation').click(function(){
-        request($(this).data('reddit'));
+        $(document).data('page', 0);
+        $('.navigation').removeClass('selected');
+        $(this).addClass('selected');
+        request();
     });
     
-	request('all');
+	request();
 });
 
 var render = function(sub) {
@@ -25,18 +53,24 @@ var render = function(sub) {
         name: '/r ' + sub,
         url: 'https://www.reddit.com/r/' + sub + '.json'
     };
-}
+};
 
-var request = function(sub) {
+var request = function(page) {
 
     const header = $('header');
     const content = $('body .content');
+    const nav = $('.navigation.selected');
+
+    var more = page ? '?count=' + (25 * page) + '&after=' + nav.data('after') : '';
 
     $.ajax({
-		url: render(sub).url,
+		url: render(nav.data('reddit')).url + more,
 		success: function(json) {
 			if(json.data){
-                content.empty();
+                if(!page){
+                    content.empty();
+                }
+                nav.data('after', json.data.after);
 				$.each(json.data.children, function(i, v) {
                     var t = (Math.random() * 10) + 1;
                     t = Math.floor(t);
@@ -83,7 +117,7 @@ var request = function(sub) {
                     }
                     
                     $(cardId + ' .info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a></p><p class="score">' + v.data.score + '</p></div>');
-                    
+
                     if(nthChild == 2) {
                         $(cardId).addClass('half-width');
                     } 
@@ -98,7 +132,6 @@ var request = function(sub) {
                     }
                     
 				});
-                console.log(json.data);
 			}
             
 		}
