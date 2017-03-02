@@ -54,6 +54,10 @@ nav ul {
     cursor: pointer;
 }
 
+.selected {
+    border-bottom: 1px solid #fff;
+}
+
 /* Post Cards */
 .post-card {
     display: flex;

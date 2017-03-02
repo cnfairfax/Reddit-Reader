@@ -23,13 +23,6 @@ $(document).on('event-scroll', function(e) {
 $(document).ready(function(){
 
     $(document).data('page', 0);
-    
-    $.ajax ({
-        url: 'https://www.reddit.com/r/movies/comments/5x1lx3/jordan_peele_plans_to_direct_a_whole_series_of.json',
-        success: function(json) {
-            console.log(json);
-        }
-    })
 
     const subreddits = [
         'all',
@@ -79,7 +72,6 @@ var request = function(page) {
                 if(!page){
                     content.empty();
                 }
-                console.log(json);
                 nav.data('after', json.data.after);
 				$.each(json.data.children, function(i, v) {
                     var t = (Math.random() * 10) + 1;
@@ -148,6 +140,25 @@ var request = function(page) {
                             }
                          });
                     }
+                    
+                    card.off('click').on('click', function(e) {
+                        e.preventDefault();
+                        if(v.data.is_self) {
+                            $.ajax ({
+                                url: v.data.url + '.json',
+                                success: function(post) {
+                                    var postedContent = post[0];
+                                    var postComments = post[1];
+                                    console.log(postedContent);
+                                    console.log(postComments);
+                                }
+                            })
+                        }
+                        console.log(v.data);
+                        console.log(v.data.permalink);
+                        console.log(v.data.url);
+                        console.log(v.data.is_self);
+                    })
 				});
 			}
             
