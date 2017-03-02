@@ -23,6 +23,13 @@ $(document).on('event-scroll', function(e) {
 $(document).ready(function(){
 
     $(document).data('page', 0);
+    
+    $.ajax ({
+        url: 'https://www.reddit.com/r/movies/comments/5x1lx3/jordan_peele_plans_to_direct_a_whole_series_of.json',
+        success: function(json) {
+            console.log(json);
+        }
+    })
 
     const subreddits = [
         'all',
@@ -72,6 +79,7 @@ var request = function(page) {
                 if(!page){
                     content.empty();
                 }
+                console.log(json);
                 nav.data('after', json.data.after);
 				$.each(json.data.children, function(i, v) {
                     var t = (Math.random() * 10) + 1;
@@ -123,17 +131,21 @@ var request = function(page) {
                         card.addClass('half-width');
                     }
                     
-                    if(v.data.spoiler || v.data.nsfw) {
+                    if(v.data.over_18 || v.data.spoiler) {
                         card.addClass('spoiler-nsfw');
                         if(v.data.spoiler) {
                             card.append('<a href="" class="card-cover spoiler"><p>SPOILER!</p></a>');
-                        } else {
+                        } else if(v.data.over_18) {
                             card.append('<a href="" class="card-cover nsfw"><p>NSFW!</p></a>');
                         }
-                        $('a.card-cover').click(function(e) {
+                        $('a.card-cover').off('click').on('click', function(e) {
                              e.preventDefault(); 
-                            /*$(this).hasClass('hidden').removeClass('hidden');*/
-                            $(this).addClass('hidden');
+                            if($(this).hasClass('hidden')) {
+                                $(this).removeClass('hidden');
+                            } 
+                            else {
+                                $(this).addClass('hidden');
+                            }
                          });
                     }
 				});
