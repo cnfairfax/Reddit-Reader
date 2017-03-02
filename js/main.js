@@ -63,7 +63,7 @@ var request = function(page) {
     const content = $('body .content');
     const nav = $('.navigation.selected');
 
-    var more = page ? '?count=' + (25 * page) + '&after=' + nav.data('after') : '';
+    var more = page ? '?count=' + (25 * parseInt(page)) + '&after=' + nav.data('after') : '';
 
     $.ajax({
 		url: render(nav.data('reddit')).url + more,
@@ -76,11 +76,7 @@ var request = function(page) {
 				$.each(json.data.children, function(i, v) {
                     var t = (Math.random() * 10) + 1;
                     t = Math.floor(t);
-                    const card = "card" + i;
-                    const cardId = '#' + card;
-                    const cardQuery = $(cardId);
                     const info = $('.info');
-                    const infoCard = cardId + ' ' + info;
                     const length = json.data.children.length;
                     const nthChild = (function() {
                         if (length%11 == 0) {
@@ -104,33 +100,35 @@ var request = function(page) {
                     })();
                     
                     if(v.data.preview) {
-					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card" id="card' + i + '"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
+					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
                     } else {
-                        content.append('<a target="_blank" href="' + v.data.url + '" class="post-card" id="' + card + '"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
-                        $(cardId).addClass('background' + t);
+                        content.append('<a target="_blank" href="' + v.data.url + '" class="post-card"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
+                        $('.post-card').last().addClass('background' + t);
                     }
+
+                    var card = $('.post-card').last();
                     
-                    $(cardId + ' .info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a></p><p class="score">' + v.data.score + '</p></div>');
+                    card.find('.info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a></p><p class="score">' + v.data.score + '</p></div>');
 
                     if(nthChild == 2) {
-                        $(cardId).addClass('half-width');
+                        card.addClass('half-width');
                     } 
                     else if(nthChild == 1) {
-                        $(cardId).addClass('full-width');
+                        card.addClass('full-width');
                     } 
                     else if(i%nthChild == 0) {
-                        $(cardId).addClass('full-width');
+                        card.addClass('full-width');
                     } 
                     else {
-                        $(cardId).addClass('half-width');
+                        card.addClass('half-width');
                     }
                     
                     if(v.data.spoiler || v.data.nsfw) {
-                        $(cardId).addClass('spoiler-nsfw');
+                        card.addClass('spoiler-nsfw');
                         if(v.data.spoiler) {
-                            $(cardId).append('<a href="" class="card-cover spoiler"><p>SPOILER!</p></a>');
+                            card.append('<a href="" class="card-cover spoiler"><p>SPOILER!</p></a>');
                         } else {
-                            $(cardId).append('<a href="" class="card-cover nsfw"><p>NSGW!</p></a>');
+                            card.append('<a href="" class="card-cover nsfw"><p>NSFW!</p></a>');
                         }
                         $('a.card-cover').click(function(e) {
                              e.preventDefault(); 
