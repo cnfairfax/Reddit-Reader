@@ -38,6 +38,7 @@ nav {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    color: #ddd;
 }
 
 nav ul {
@@ -221,7 +222,7 @@ nav ul {
     justify-content: center;
     position: fixed;
     top: 25px;
-    right: 25px;
+    right: 50px;
     width: 25px;
     height: 25px;
     z-index: 1001;
@@ -269,6 +270,16 @@ nav ul {
 
 .full-post-content .self-text {
     border-bottom: 1px solid rgba(0,0,0,0.25);
+    min-width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.self-text img {
+    max-width: 100%;
 }
 
 .full-post-content .md {

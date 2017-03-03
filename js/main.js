@@ -130,7 +130,7 @@ var request = function(page) {
                     if(v.data.over_18 || v.data.spoiler) {
                         card.addClass('spoiler-nsfw');
                         if(v.data.spoiler) {
-                            card.append('<a href="" class="card-cover spoiler"><p>SPOILER!</p></a>');
+                            card.append('<a href="" class="card-cover spoiler"><p class="warning-type">SPOILER!</p><p class="subreddit">' + v.data.subreddit_name_prefixed + '</p></a>');
                         } else if(v.data.over_18) {
                             card.append('<a href="" class="card-cover nsfw"><p class="warning-type">NSFW!</p><p class="subreddit">' + v.data.subreddit_name_prefixed + '</p></a>');
                         }
@@ -147,16 +147,18 @@ var request = function(page) {
                          })
 				}
                 card.off('click').on('click', function(e) {
-                    e.preventDefault();    
-                    if(v.data.is_self) {
+                      
+                    if(~v.data.domain.indexOf('self') || ~v.data.domain.indexOf('redd')) {
+                            e.preventDefault();
                             renderFullPost();
+                            console.log(v.data.url)
                         }
                     console.log(v);
                     })
                 
                 function renderFullPost() {
                             $.ajax ({
-                                url: v.data.url + '.json',
+                                url: 'https://www.reddit.com' + v.data.permalink + '.json',
                                 success: function(post) {
                                     var postedContent = post[0].data.children[0];
                                     var postComments = post[1];
@@ -165,6 +167,10 @@ var request = function(page) {
                                     })();
                                     content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
                                     var fullPostContent = $('.full-post-content');
+                                    if(postedContent.data.preview) {
+                                        var image = postedContent.data.preview;
+                                        fullPostContent.find($('.self-text')).append('<img src=' + image.images[0].resolutions[image.images[0].resolutions.length-1].url + '>');
+                                    }
                                     $.each(postComments.data.children, function(count, comment) {
                                         var commentTextHtml = (function() {
                                         return $('<div></div>').html(comment.data.body_html).text();
@@ -198,6 +204,11 @@ function renderFullPost() {
                                     })();
                                     content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
                                     var fullPostContent = $('.full-post-content');
+                                    if(postedContent.data.preview.enabled) {
+                                        var image = postedContent.data.preview;
+                                        fullPostContent.find($('.self-text')).append('<img src=' + image.images[images.length-1].resolution[resolution.length-1].url + '>');
+                                        console.log(image.images[(images.length)-1].resolution[(resolutions.length)-1].url);
+                                    }
                                     $.each(postComments.data.children, function(count, comment) {
                                         var commentTextHtml = (function() {
                                         return $('<div></div>').html(comment.data.body_html).text();
