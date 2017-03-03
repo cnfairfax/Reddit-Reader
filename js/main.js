@@ -29,7 +29,9 @@ $(document).ready(function(){
         'pics',
         'aww',
         'gifs',
-        'blackpeopletwitter'
+        'blackpeopletwitter',
+        'reformed',
+        'iama'
     ];
 
     const navList = $('nav ul');
@@ -108,7 +110,7 @@ var request = function(page) {
 
                     var card = $('.post-card').last();
                     
-                    card.find('.info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a></p><p class="score">' + v.data.score + '</p></div>');
+                    card.find('.info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a> On <a target="_blank" href="https://www.reddit.com/r/' + v.data.subreddit + '">' + v.data.subreddit_name_prefixed +'</a></p><p class="score">' + v.data.score + '</p></div>');
 
                     if(nthChild == 2) {
                         card.addClass('half-width');
@@ -142,15 +144,31 @@ var request = function(page) {
                     }
                     
                     card.off('click').on('click', function(e) {
-                        e.preventDefault();
                         if(v.data.is_self) {
+                            e.preventDefault();
                             $.ajax ({
                                 url: v.data.url + '.json',
                                 success: function(post) {
-                                    var postedContent = post[0];
+                                    var postedContent = post[0].data.children[0];
                                     var postComments = post[1];
+                                    var postTextHtml = (function() {
+                                        return $('<div></div>').html(postedContent.data.selftext_html).text();
+                                    })();
+                                    content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
+                                    var fullPostContent = $('.full-post-content');
+                                    $.each(postComments.data.children, function(count, comment) {
+                                        var commentTextHtml = (function() {
+                                        return $('<div></div>').html(comment.data.body_html).text();
+                                    })();
+                                       // console.log(commentTextHtml);
+                                        fullPostContent.append(commentTextHtml);
+                                    });
+                                    $('.full-post i').off('click').on('click', function(evt) {
+                                        fullPost.remove();
+                                    });
+                                    var fullPost = $('.full-post');
                                     console.log(postedContent);
-                                    console.log(postComments);
+                                    console.log(postComments.data.children);
                                 }
                             })
                         }

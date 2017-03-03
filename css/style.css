@@ -17,6 +17,7 @@ body .content {
     width: 85%;
     margin-left: 15%;
     overflow-y: auto;
+    position: relative;
 }
 
 h2 {
@@ -189,6 +190,63 @@ nav ul {
 .hidden p {
     padding: 0;
     border-color: rgba(250,250,250,0);
+}
+
+/* Self Posts */
+.full-post {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 85%;
+    height: 100%;
+    z-index: 1000;
+    background: #eee;
+    overflow: scroll;
+}
+
+.full-post i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    width: 25px;
+    height: 25px;
+    z-index: 1001;
+    cursor: pointer;
+    background: rgba(204, 188, 163, 0.52);
+    color: #fff;
+    border-radius: 3px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    transition: all .2s ease;
+}
+
+.full-post i:hover {
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+}
+
+.full-post-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    max-width: 900px;
+    margin: auto;
+    color: #121212;
+}
+
+.full-post-content h2 {
+    font-family: 'Work Sans', sans-serif;
+    margin-top: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid;
+}
+
+.full-post-content .self-text, .full-post-content .md {
+    font-family: 'Merriweather';
+    font-size: 1.1em;
+    line-height: 1.35em;
 }
 
 /*No Preview Image Backgrounds*/
