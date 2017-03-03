@@ -147,6 +147,7 @@ nav ul {
 .card-cover {
     font-weight: 900;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -174,10 +175,16 @@ nav ul {
     z-index: -1;
 }
 
-.card-cover p {
+.card-cover .warning-type {
     padding: 20px;
     border: 2px solid rgba(250,250,250,1);
     transition: all .5s ease;
+}
+
+.card-cover .subreddit {
+    font-family: 'Merriweather', serif;
+    font-weight: 400;
+    padding: 20px;
 }
 
 .hidden {
@@ -187,9 +194,13 @@ nav ul {
     width: 50%;
 }
 
-.hidden p {
+.hidden .warning-type {
     padding: 0;
     border-color: rgba(250,250,250,0);
+}
+
+.hidden .subreddit {
+    display: none;
 }
 
 /* Self Posts */
@@ -215,7 +226,7 @@ nav ul {
     height: 25px;
     z-index: 1001;
     cursor: pointer;
-    background: rgba(204, 188, 163, 0.52);
+    background: rgb(229, 217, 197);
     color: #fff;
     border-radius: 3px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
@@ -245,8 +256,30 @@ nav ul {
 
 .full-post-content .self-text, .full-post-content .md {
     font-family: 'Merriweather';
+}
+
+.full-post-content .self-text .md {
     font-size: 1.1em;
     line-height: 1.35em;
+    background: none;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+.full-post-content .self-text {
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+}
+
+.full-post-content .md {
+    font-size: 1em;
+    line-height: 1.25em;
+    background: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 100%;
+    padding: 0 20px;
+    margin-top: 20px;
 }
 
 /*No Preview Image Backgrounds*/

@@ -31,7 +31,9 @@ $(document).ready(function(){
         'gifs',
         'blackpeopletwitter',
         'reformed',
-        'iama'
+        'iama',
+        'baking',
+        'tifu'
     ];
 
     const navList = $('nav ul');
@@ -130,22 +132,29 @@ var request = function(page) {
                         if(v.data.spoiler) {
                             card.append('<a href="" class="card-cover spoiler"><p>SPOILER!</p></a>');
                         } else if(v.data.over_18) {
-                            card.append('<a href="" class="card-cover nsfw"><p>NSFW!</p></a>');
+                            card.append('<a href="" class="card-cover nsfw"><p class="warning-type">NSFW!</p><p class="subreddit">' + v.data.subreddit_name_prefixed + '</p></a>');
                         }
-                        $('a.card-cover').off('click').on('click', function(e) {
-                             e.preventDefault(); 
+                                                
+                        $('a.card-cover').off('click').on('click', function(e) { 
+                            e.preventDefault(); 
                             if($(this).hasClass('hidden')) {
                                 $(this).removeClass('hidden');
                             } 
                             else {
                                 $(this).addClass('hidden');
+                                
                             }
-                         });
-                    }
-                    
-                    card.off('click').on('click', function(e) {
-                        if(v.data.is_self) {
-                            e.preventDefault();
+                         })
+				}
+                card.off('click').on('click', function(e) {
+                    e.preventDefault();    
+                    if(v.data.is_self) {
+                            renderFullPost();
+                        }
+                    console.log(v);
+                    })
+                
+                function renderFullPost() {
                             $.ajax ({
                                 url: v.data.url + '.json',
                                 success: function(post) {
@@ -160,7 +169,6 @@ var request = function(page) {
                                         var commentTextHtml = (function() {
                                         return $('<div></div>').html(comment.data.body_html).text();
                                     })();
-                                       // console.log(commentTextHtml);
                                         fullPostContent.append(commentTextHtml);
                                     });
                                     $('.full-post i').off('click').on('click', function(evt) {
@@ -172,14 +180,36 @@ var request = function(page) {
                                 }
                             })
                         }
-                        console.log(v.data);
-                        console.log(v.data.permalink);
-                        console.log(v.data.url);
-                        console.log(v.data.is_self);
-                    })
-				});
-			}
+			})
             
 		}
-	})
+	}
+})
 }
+
+function renderFullPost() {
+                            $.ajax ({
+                                url: v.data.url + '.json',
+                                success: function(post) {
+                                    var postedContent = post[0].data.children[0];
+                                    var postComments = post[1];
+                                    var postTextHtml = (function() {
+                                        return $('<div></div>').html(postedContent.data.selftext_html).text();
+                                    })();
+                                    content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
+                                    var fullPostContent = $('.full-post-content');
+                                    $.each(postComments.data.children, function(count, comment) {
+                                        var commentTextHtml = (function() {
+                                        return $('<div></div>').html(comment.data.body_html).text();
+                                    })();
+                                        fullPostContent.append(commentTextHtml);
+                                    });
+                                    $('.full-post i').off('click').on('click', function(evt) {
+                                        fullPost.remove();
+                                    });
+                                    var fullPost = $('.full-post');
+                                    console.log(postedContent);
+                                    console.log(postComments.data.children);
+                                }
+                            })
+                        }
