@@ -12,17 +12,19 @@ document.addEventListener('scroll', function (e){
 }, true);
 
 $(document).on('event-scroll', function(e) {
-    $(e.target).do(function(){
-        if (Math.ceil(this.scrollTop() + this.height()) >= this.get(0).scrollHeight){
-            var page = $(document).data('page', $(document).data('page') + 1);
-            request(page);
-        }
-    })
-})
+    if($(e.target).hasClass('content')) {
+        $(e.target).do(function(){
+            if (Math.ceil(this.scrollTop() + this.height()) >= this.get(0).scrollHeight){
+                var page = $('.content').data('page', $('.content').data('page') + 1);
+                request(page);
+            }
+        });
+    }
+});
 
 $(document).ready(function(){
 
-    $(document).data('page', 0);
+    $('.content').data('page', 0);
 
     const subreddits = [
         'all',
@@ -43,12 +45,11 @@ $(document).ready(function(){
     });
 
     $('.navigation').click(function(){
-        $(document).data('page', 0);
+        $('.content').data('page', 0).scrollTop(0);
         $('.navigation').removeClass('selected');
         $(this).addClass('selected');
         request();
-    });
-    
+    });   
 
 	request();
 
@@ -67,7 +68,7 @@ var request = function(page) {
     const content = $('body .content');
     const nav = $('.navigation.selected');
 
-    var more = page ? '?count=' + (25 * parseInt(page)) + '&after=' + nav.data('after') : '';
+    var more = page ? ('?count=' + (25 * parseInt(page)) + '&after=' + nav.data('after')) : '';
 
     $.ajax({
 		url: render(nav.data('reddit')).url + more,
@@ -145,82 +146,79 @@ var request = function(page) {
                                 
                             }
                          })
-				}
-                card.off('click').on('click', function(e) {
-                      
-                    if(~v.data.domain.indexOf('self') || ~v.data.domain.indexOf('redd')) {
+				    }
+
+                    card.off('click').on('click', function(e) {
+                        if(~v.data.domain.indexOf('self') || ~v.data.domain.indexOf('redd')) {
                             e.preventDefault();
                             renderFullPost();
-                            console.log(v.data.url)
                         }
-                    console.log(v);
                     })
                 
-                function renderFullPost() {
-                            $.ajax ({
-                                url: 'https://www.reddit.com' + v.data.permalink + '.json',
-                                success: function(post) {
-                                    var postedContent = post[0].data.children[0];
-                                    var postComments = post[1];
-                                    var postTextHtml = (function() {
-                                        return $('<div></div>').html(postedContent.data.selftext_html).text();
-                                    })();
-                                    content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
-                                    var fullPostContent = $('.full-post-content');
-                                    if(postedContent.data.preview) {
-                                        var image = postedContent.data.preview;
-                                        fullPostContent.find($('.self-text')).append('<img src=' + image.images[0].resolutions[image.images[0].resolutions.length-1].url + '>');
-                                    }
-                                    $.each(postComments.data.children, function(count, comment) {
-                                        var commentTextHtml = (function() {
-                                        return $('<div></div>').html(comment.data.body_html).text();
-                                    })();
-                                        fullPostContent.append(commentTextHtml);
-                                    });
-                                    $('.full-post i').off('click').on('click', function(evt) {
-                                        fullPost.remove();
-                                    });
-                                    var fullPost = $('.full-post');
-                                    console.log(postedContent);
-                                    console.log(postComments.data.children);
+                    function renderFullPost() {
+                        $.ajax ({
+                            url: 'https://www.reddit.com' + v.data.permalink + '.json',
+                            success: function(post) {
+                                var postedContent = post[0].data.children[0];
+                                var postComments = post[1];
+                                var postTextHtml = (function() {
+                                    return $('<div></div>').html(postedContent.data.selftext_html).text();
+                                })();
+                                content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
+                                var fullPostContent = $('.full-post-content');
+                                if(postedContent.data.preview) {
+                                    var image = postedContent.data.preview;
+                                    fullPostContent.find($('.self-text')).append('<img src=' + image.images[0].resolutions[image.images[0].resolutions.length-1].url + '>');
                                 }
-                            })
-                        }
-			})
-            
-		}
-	}
-})
+                                $.each(postComments.data.children, function(count, comment) {
+                                    var commentTextHtml = (function() {
+                                    return $('<div></div>').html(comment.data.body_html).text();
+                                })();
+                                    fullPostContent.append(commentTextHtml);
+                                });
+                                $('.full-post i').off('click').on('click', function(evt) {
+                                    fullPost.remove();
+                                });
+                                var fullPost = $('.full-post');
+                                console.log(postedContent);
+                                console.log(postComments.data.children);
+                            }
+                        })
+                    }
+			    })  
+		    }
+	    }
+    })
 }
 
 function renderFullPost() {
-                            $.ajax ({
-                                url: v.data.url + '.json',
-                                success: function(post) {
-                                    var postedContent = post[0].data.children[0];
-                                    var postComments = post[1];
-                                    var postTextHtml = (function() {
-                                        return $('<div></div>').html(postedContent.data.selftext_html).text();
-                                    })();
-                                    content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
-                                    var fullPostContent = $('.full-post-content');
-                                    if(postedContent.data.preview.enabled) {
-                                        var image = postedContent.data.preview;
-                                        fullPostContent.find($('.self-text')).append('<img src=' + image.images[images.length-1].resolution[resolution.length-1].url + '>');
-                                        console.log(image.images[(images.length)-1].resolution[(resolutions.length)-1].url);
-                                    }
-                                    $.each(postComments.data.children, function(count, comment) {
-                                        var commentTextHtml = (function() {
-                                        return $('<div></div>').html(comment.data.body_html).text();
-                                    })();
-                                        fullPostContent.append(commentTextHtml);
-                                    });
-                                    $('.full-post i').off('click').on('click', function(evt) {
-                                        fullPost.remove();
-                                    });
-                                    var fullPost = $('.full-post');
-                                    console.log(postedContent);
-                                    console.log(postComments.data.children);
-                                }
-                            })
-                        }
+    $.ajax ({
+        url: v.data.url + '.json',
+        success: function(post) {
+            var postedContent = post[0].data.children[0];
+            var postComments = post[1];
+            var postTextHtml = (function() {
+                return $('<div></div>').html(postedContent.data.selftext_html).text();
+            })();
+            content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
+            var fullPostContent = $('.full-post-content');
+            if(postedContent.data.preview.enabled) {
+                var image = postedContent.data.preview;
+                fullPostContent.find($('.self-text')).append('<img src=' + image.images[images.length-1].resolution[resolution.length-1].url + '>');
+                console.log(image.images[(images.length)-1].resolution[(resolutions.length)-1].url);
+            }
+            $.each(postComments.data.children, function(count, comment) {
+                var commentTextHtml = (function() {
+                return $('<div></div>').html(comment.data.body_html).text();
+            })();
+                fullPostContent.append(commentTextHtml);
+            });
+            $('.full-post i').off('click').on('click', function(evt) {
+                fullPost.remove();
+            });
+            var fullPost = $('.full-post');
+            console.log(postedContent);
+            console.log(postComments.data.children);
+        }
+    })
+}
