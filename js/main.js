@@ -15,16 +15,13 @@ $(document).on('event-scroll', function(e) {
     if($(e.target).hasClass('content')) {
         $(e.target).do(function(){
             if (Math.ceil(this.scrollTop() + this.height()) >= this.get(0).scrollHeight){
-                var page = $('.content').data('page', $('.content').data('page') + 1);
-                request(page);
+                request();
             }
         });
     }
 });
 
 $(document).ready(function(){
-
-    $('.content').data('page', 0);
 
     const subreddits = [
         'all',
@@ -45,9 +42,9 @@ $(document).ready(function(){
     });
 
     $('.navigation').click(function(){
-        $('.content').data('page', 0).scrollTop(0);
         $('.navigation').removeClass('selected');
-        $(this).addClass('selected');
+        $(this).addClass('selected').data('after', '');
+        $('.content').scrollTop(0);
         request();
     });   
 
@@ -62,19 +59,20 @@ var render = function(sub) {
     };
 };
 
-var request = function(page) {
+var request = function() {
 
     const header = $('header');
     const content = $('body .content');
     const nav = $('.navigation.selected');
+    const after = nav.data('after');
 
-    var more = page ? ('?count=' + (25 * parseInt(page)) + '&after=' + nav.data('after')) : '';
+    var more = after ? '?after=' + after : '';
 
     $.ajax({
 		url: render(nav.data('reddit')).url + more,
 		success: function(json) {
 			if(json.data){
-                if(!page){
+                if(!after){
                     content.empty();
                 }
                 nav.data('after', json.data.after);
