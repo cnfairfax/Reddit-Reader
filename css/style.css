@@ -271,6 +271,7 @@ nav ul {
 .full-post-content .self-text {
     border-bottom: 1px solid rgba(0,0,0,0.25);
     min-width: 100%;
+    padding-bottom: 20px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
@@ -278,7 +279,14 @@ nav ul {
     justify-content: center;
 }
 
-img {
+.post-picture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.post-picture img {
     max-width: 100%;
 }
 

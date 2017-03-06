@@ -147,7 +147,7 @@ var request = function() {
 				    }
 
                     card.off('click').on('click', function(e) {
-                        if(~v.data.domain.indexOf('self') || ~v.data.domain.indexOf('redd')) {
+                        if(v.data.domain.indexOf('self') || v.data.domain.indexOf('redd')) {
                             e.preventDefault();
                             renderFullPost();
                         }
@@ -166,7 +166,7 @@ var request = function() {
                                 var fullPostContent = $('.full-post-content');
                                 if(postedContent.data.preview) {
                                     var image = postedContent.data.preview;
-                                    fullPostContent.find($('.self-text')).append('<img src=' + image.images[0].resolutions[image.images[0].resolutions.length-1].url + '>');
+                                    fullPostContent.find($('.self-text')).append('<div class="post-picture"><img src=' + image.images[0].source.url + '></div>');
                                 }
                                 $.each(postComments.data.children, function(count, comment) {
                                     var commentTextHtml = (function() {
@@ -186,37 +186,5 @@ var request = function() {
 			    })  
 		    }
 	    }
-    })
-}
-
-function renderFullPost() {
-    $.ajax ({
-        url: v.data.url + '.json',
-        success: function(post) {
-            var postedContent = post[0].data.children[0];
-            var postComments = post[1];
-            var postTextHtml = (function() {
-                return $('<div></div>').html(postedContent.data.selftext_html).text();
-            })();
-            content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
-            var fullPostContent = $('.full-post-content');
-            if(postedContent.data.preview.enabled) {
-                var image = postedContent.data.preview;
-                fullPostContent.find($('.self-text')).append('<img src=' + image.images[images.length-1].resolution[resolution.length-1].url + '>');
-                console.log(image.images[(images.length)-1].resolution[(resolutions.length)-1].url);
-            }
-            $.each(postComments.data.children, function(count, comment) {
-                var commentTextHtml = (function() {
-                return $('<div></div>').html(comment.data.body_html).text();
-            })();
-                fullPostContent.append(commentTextHtml);
-            });
-            $('.full-post i').off('click').on('click', function(evt) {
-                fullPost.remove();
-            });
-            var fullPost = $('.full-post');
-            console.log(postedContent);
-            console.log(postComments.data.children);
-        }
     })
 }
