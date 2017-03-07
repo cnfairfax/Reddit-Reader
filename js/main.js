@@ -100,6 +100,25 @@ var request = function() {
                         else {
                             return 1;
                         }
+                        /*switch() {
+                            case !!(length%11 == 0):
+                                return 11;
+                                break;
+                            case !!(length%7 == 0):
+                                return 7;
+                                break;
+                            case !!(length%5 == 0):
+                                return 5;
+                                break;
+                            case !!(length%3 == 0):
+                                return 3;
+                                break;
+                            case !!(length%2 == 0):
+                                return 2;
+                                break;
+                            default:
+                                return 1;
+                        }*/
                     })();
                     
                     if(v.data.preview) {
