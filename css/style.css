@@ -234,7 +234,7 @@ nav ul {
     transition: all .2s ease;
 }
 
-.full-post i:hover {
+.full-post .close-post:hover {
     box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 

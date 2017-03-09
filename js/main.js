@@ -81,55 +81,9 @@ var request = function() {
                 nav.data('after', json.data.after);
 				$.each(json.data.children, function(i, v) {
                     const info = $('.info');
-                    const length = json.data.children.length;
-                    const nthChild = findPrimeFactor(length);
                     
-                    renderPostCard(content, v);
-                    
-                    var card = $('.post-card').last();
-                    
-                    card.find('.info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a> On <a target="_blank" href="https://www.reddit.com/r/' + v.data.subreddit + '">' + v.data.subreddit_name_prefixed +'</a></p><p class="score">' + v.data.score + '</p></div>');
-
-                    if(nthChild == 2) {
-                        card.addClass('half-width');
-                    } 
-                    else if(nthChild == 1) {
-                        card.addClass('full-width');
-                    } 
-                    else if(i%nthChild == 0) {
-                        card.addClass('full-width');
-                    } 
-                    else {
-                        card.addClass('half-width');
-                    }
-                    
-                    if(v.data.over_18 || v.data.spoiler) {
-                        card.addClass('spoiler-nsfw');
-                        if(v.data.spoiler) {
-                            card.append('<a href="" class="card-cover spoiler"><p class="warning-type">SPOILER!</p><p class="subreddit">' + v.data.subreddit_name_prefixed + '</p></a>');
-                        } else if(v.data.over_18) {
-                            card.append('<a href="" class="card-cover nsfw"><p class="warning-type">NSFW!</p><p class="subreddit">' + v.data.subreddit_name_prefixed + '</p></a>');
-                        }
-                                                
-                        $('a.card-cover').off('click').on('click', function(e) { 
-                            e.preventDefault(); 
-                            if($(this).hasClass('hidden')) {
-                                $(this).removeClass('hidden');
-                            } 
-                            else {
-                                $(this).addClass('hidden');
-                                
-                            }
-                         })
-				    }
-
-                    card.off('click').on('click', function(e) {
-                        if(v.data.domain.indexOf('self') || v.data.domain.indexOf('redd')) {
-                            e.preventDefault();
-                            renderFullPost(content, v);
-                        }
-                    })
-                    })  
+                    renderPostCard(content, v, json, i);    
+                })  
 		    }
 	    }
     })
@@ -148,43 +102,97 @@ var findPrimeFactor = function(n) {
 }
 
 var renderFullPost = function(domTarget, datum) {
-        $.ajax ({
-            url: 'https://www.reddit.com' + datum.data.permalink + '.json',
-            success: function(post) {
-                var postedContent = post[0].data.children[0];
-                var postComments = post[1];
-                var postTextHtml = (function() {
+    $.ajax ({
+        url: 'https://www.reddit.com' + datum.data.permalink + '.json',
+        success: function(post) {
+            var postedContent = post[0].data.children[0];
+            var postComments = post[1];
+            var postTextHtml = (function() {
                     return $('<div></div>').html(postedContent.data.selftext_html).text();
-                    })();
-                domTarget.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
-                var fullPostContent = $('.full-post-content');
-                if(postedContent.data.preview) {
-                    var image = postedContent.data.preview;
-                    fullPostContent.find($('.self-text')).append('<div class="post-picture"><img src=' + image.images[0].source.url + '></div>');
-                }
-                $.each(postComments.data.children, function(count, comment) {
-                    var commentTextHtml = (function() {
-                    return $('<div></div>').html(comment.data.body_html).text();
-                    })();
-                    fullPostContent.append(commentTextHtml);
-                });
-                $('.full-post i').off('click').on('click', function(evt) {
-                    fullPost.remove();
-                });
-                var fullPost = $('.full-post');
-                console.log(postedContent);
-                console.log(postComments.data.children);
+                })();
+                
+            domTarget.append('<div class="full-post"><i class="close-post fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
+            
+            var fullPostContent = $('.full-post-content');
+            
+            if(postedContent.data.preview) {
+                var image = postedContent.data.preview;
+                fullPostContent.find('.self-text').append('<div class="post-picture"><img src=' + image.images[0].source.url + '></div>');
+            }
+            
+            $.each(postComments.data.children, function(count, comment) {
+                var commentTextHtml = (function() {
+                return $('<div></div>').html(comment.data.body_html).text();
+                })();
+                
+                fullPostContent.append(commentTextHtml);
+            });
+            
+            var fullPost = $('.full-post');
+            
+            fullPost.find('.close-post').off('click').on('click', function(evt) {
+                fullPost.remove();
+            });
+            
+            console.log(postedContent);
+            console.log(postComments.data.children);
             }
         })
 }
 
-var renderPostCard = function(domTarget, datum) {
+var renderPostCard = function(domTarget, datum, dataSet, count) {
     var t = (Math.random() * 10) + 1;
     t = Math.floor(t);
+    const length = dataSet.data.children.length;
+    const nthChild = findPrimeFactor(length);
     domTarget.append('<a target="_blank" href="' + datum.data.url + '" class="post-card"><div class="info"><h2>' + datum.data.title + '</h2></div></a>');
     $('.post-card').last().addClass('background' + t);
                     
     if(datum.data.preview) {
         $('.post-card').last().attr('style',  'background: url(' + datum.data.preview.images[0].source.url + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
     }
+    
+    var card = $('.post-card').last();
+                    
+    card.find('.info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + datum.data.permalink + '">' + datum.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + datum.data.author + '">' + datum.data.author + '</a> On <a target="_blank" href="https://www.reddit.com/r/' + datum.data.subreddit + '">' + datum.data.subreddit_name_prefixed +'</a></p><p class="score">' + datum.data.score + '</p></div>');
+
+    if(nthChild == 2) {
+        card.addClass('half-width');
+    } 
+    else if(nthChild == 1) {
+        card.addClass('full-width');
+    } 
+    else if(count%nthChild == 0) {
+        card.addClass('full-width');
+    } 
+    else {
+        card.addClass('half-width');
+    }
+                    
+    if(datum.data.over_18 || datum.data.spoiler) {
+        card.addClass('spoiler-nsfw');
+        if(datum.data.spoiler) {
+            card.append('<a href="" class="card-cover spoiler"><p class="warning-type">SPOILER!</p><p class="subreddit">' + datum.data.subreddit_name_prefixed + '</p></a>');
+        } 
+        else if(datum.data.over_18) {
+            card.append('<a href="" class="card-cover nsfw"><p class="warning-type">NSFW!</p><p class="subreddit">' + datum.data.subreddit_name_prefixed + '</p></a>');
+        }
+                                                
+        $('a.card-cover').off('click').on('click', function(e) { 
+            e.preventDefault(); 
+            if($(this).hasClass('hidden')) {
+                $(this).removeClass('hidden');
+            } 
+            else {
+                $(this).addClass('hidden');                    
+            }
+        })
+    }
+
+    card.off('click').on('click', function(e) {
+        if(datum.data.domain.indexOf('self') || datum.data.domain.indexOf('redd')) {
+            e.preventDefault();
+            renderFullPost(domTarget, datum);
+        }
+    })
 }
