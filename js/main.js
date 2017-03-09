@@ -34,7 +34,8 @@ $(document).ready(function(){
         'reformed',
         'iama',
         'baking',
-        'tifu'
+        'tifu',
+        'girls'
     ];
 
     const navList = $('nav ul');
@@ -79,19 +80,12 @@ var request = function() {
                 }
                 nav.data('after', json.data.after);
 				$.each(json.data.children, function(i, v) {
-                    var t = (Math.random() * 10) + 1;
-                    t = Math.floor(t);
                     const info = $('.info');
                     const length = json.data.children.length;
-                    const nthChild = findPrimeDenominator(length);
+                    const nthChild = findPrimeFactor(length);
                     
-                    content.append('<a target="_blank" href="' + v.data.url + '" class="post-card"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
-                    $('.post-card').last().addClass('background' + t);
+                    renderPostCard(content, v);
                     
-                    if(v.data.preview) {
-                        $('.post-card').last().attr('style',  'background: url(' + v.data.preview.images[0].source.url + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
-                    }
-
                     var card = $('.post-card').last();
                     
                     card.find('.info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + v.data.permalink + '">' + v.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + v.data.author + '">' + v.data.author + '</a> On <a target="_blank" href="https://www.reddit.com/r/' + v.data.subreddit + '">' + v.data.subreddit_name_prefixed +'</a></p><p class="score">' + v.data.score + '</p></div>');
@@ -141,26 +135,17 @@ var request = function() {
     })
 }
 
-var findPrimeDenominator = function(n) {
-        if (n%11 == 0) {
-            return 11;
-        }
-        else if (n%7 == 0) {
-            return 7;
-        }
-        else if (n%5 == 0) {
-            return 5;
-        }
-        else if (n%3 == 0) {
-            return 3;
-        }
-        else if (n%2 == 0){
-            return 2;
-        }
-        else {
-            return 1;
+var findPrimeFactor = function(n) {
+    var i=2;
+    while (i<=n){
+        if (n%i == 0){
+            n/=i;    
+        }else{
+            i++;
         }
     }
+    return i;
+}
 
 var renderFullPost = function(domTarget, datum) {
         $.ajax ({
@@ -191,4 +176,15 @@ var renderFullPost = function(domTarget, datum) {
                 console.log(postComments.data.children);
             }
         })
+}
+
+var renderPostCard = function(domTarget, datum) {
+    var t = (Math.random() * 10) + 1;
+    t = Math.floor(t);
+    domTarget.append('<a target="_blank" href="' + datum.data.url + '" class="post-card"><div class="info"><h2>' + datum.data.title + '</h2></div></a>');
+    $('.post-card').last().addClass('background' + t);
+                    
+    if(datum.data.preview) {
+        $('.post-card').last().attr('style',  'background: url(' + datum.data.preview.images[0].source.url + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
+    }
 }
