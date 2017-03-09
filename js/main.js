@@ -85,11 +85,11 @@ var request = function() {
                     const length = json.data.children.length;
                     const nthChild = findPrimeDenominator(length);
                     
+                    content.append('<a target="_blank" href="' + v.data.url + '" class="post-card"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
+                    $('.post-card').last().addClass('background' + t);
+                    
                     if(v.data.preview) {
-					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
-                    } else {
-                        content.append('<a target="_blank" href="' + v.data.url + '" class="post-card"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
-                        $('.post-card').last().addClass('background' + t);
+                        $('.post-card').last().attr('style',  'background: url(' + v.data.preview.images[0].source.url + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
                     }
 
                     var card = $('.post-card').last();
@@ -132,45 +132,16 @@ var request = function() {
                     card.off('click').on('click', function(e) {
                         if(v.data.domain.indexOf('self') || v.data.domain.indexOf('redd')) {
                             e.preventDefault();
-                            renderFullPost();
+                            renderFullPost(content, v);
                         }
                     })
-                
-                    function renderFullPost() {
-                        $.ajax ({
-                            url: 'https://www.reddit.com' + v.data.permalink + '.json',
-                            success: function(post) {
-                                var postedContent = post[0].data.children[0];
-                                var postComments = post[1];
-                                var postTextHtml = (function() {
-                                    return $('<div></div>').html(postedContent.data.selftext_html).text();
-                                })();
-                                content.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
-                                var fullPostContent = $('.full-post-content');
-                                if(postedContent.data.preview) {
-                                    var image = postedContent.data.preview;
-                                    fullPostContent.find($('.self-text')).append('<div class="post-picture"><img src=' + image.images[0].source.url + '></div>');
-                                }
-                                $.each(postComments.data.children, function(count, comment) {
-                                    var commentTextHtml = (function() {
-                                    return $('<div></div>').html(comment.data.body_html).text();
-                                })();
-                                    fullPostContent.append(commentTextHtml);
-                                });
-                                $('.full-post i').off('click').on('click', function(evt) {
-                                    fullPost.remove();
-                                });
-                                var fullPost = $('.full-post');
-                                console.log(postedContent);
-                                console.log(postComments.data.children);
-                            }
-                        })
-                    }
-			    })  
+                    })  
 		    }
 	    }
     })
-    function findPrimeDenominator(n) {
+}
+
+var findPrimeDenominator = function(n) {
         if (n%11 == 0) {
             return 11;
         }
@@ -190,4 +161,34 @@ var request = function() {
             return 1;
         }
     }
+
+var renderFullPost = function(domTarget, datum) {
+        $.ajax ({
+            url: 'https://www.reddit.com' + datum.data.permalink + '.json',
+            success: function(post) {
+                var postedContent = post[0].data.children[0];
+                var postComments = post[1];
+                var postTextHtml = (function() {
+                    return $('<div></div>').html(postedContent.data.selftext_html).text();
+                    })();
+                domTarget.append('<div class="full-post"><i class="fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
+                var fullPostContent = $('.full-post-content');
+                if(postedContent.data.preview) {
+                    var image = postedContent.data.preview;
+                    fullPostContent.find($('.self-text')).append('<div class="post-picture"><img src=' + image.images[0].source.url + '></div>');
+                }
+                $.each(postComments.data.children, function(count, comment) {
+                    var commentTextHtml = (function() {
+                    return $('<div></div>').html(comment.data.body_html).text();
+                    })();
+                    fullPostContent.append(commentTextHtml);
+                });
+                $('.full-post i').off('click').on('click', function(evt) {
+                    fullPost.remove();
+                });
+                var fullPost = $('.full-post');
+                console.log(postedContent);
+                console.log(postComments.data.children);
+            }
+        })
 }
