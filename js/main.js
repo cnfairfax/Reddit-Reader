@@ -81,45 +81,7 @@ var request = function() {
                     t = Math.floor(t);
                     const info = $('.info');
                     const length = json.data.children.length;
-                    const nthChild = (function() {
-                        if (length%11 == 0) {
-                            return 11;
-                        }
-                        else if (length%7 == 0) {
-                            return 7;
-                        }
-                        else if (length%5 == 0) {
-                            return 5;
-                        }
-                        else if (length%3 == 0) {
-                            return 3;
-                        }
-                        else if (length%2 == 0){
-                            return 2;
-                        }
-                        else {
-                            return 1;
-                        }
-                        /*switch() {
-                            case !!(length%11 == 0):
-                                return 11;
-                                break;
-                            case !!(length%7 == 0):
-                                return 7;
-                                break;
-                            case !!(length%5 == 0):
-                                return 5;
-                                break;
-                            case !!(length%3 == 0):
-                                return 3;
-                                break;
-                            case !!(length%2 == 0):
-                                return 2;
-                                break;
-                            default:
-                                return 1;
-                        }*/
-                    })();
+                    const nthChild = findPrimeDenominator(length);
                     
                     if(v.data.preview) {
 					   content.append('<a target="_blank" style="background-image: url(' + v.data.preview.images[0].source.url + ');" href="' + v.data.url + '" class="post-card"><div class="info"><h2>' + v.data.title + '</h2></div></a>');
@@ -206,4 +168,24 @@ var request = function() {
 		    }
 	    }
     })
+    function findPrimeDenominator(n) {
+        if (n%11 == 0) {
+            return 11;
+        }
+        else if (n%7 == 0) {
+            return 7;
+        }
+        else if (n%5 == 0) {
+            return 5;
+        }
+        else if (n%3 == 0) {
+            return 3;
+        }
+        else if (n%2 == 0){
+            return 2;
+        }
+        else {
+            return 1;
+        }
+    }
 }
