@@ -145,6 +145,7 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
     t = Math.floor(t);
     const length = dataSet.data.children.length;
     const nthChild = findPrimeFactor(length);
+    
     domTarget.append('<a target="_blank" href="' + datum.data.url + '" class="post-card"><div class="info"><h2>' + datum.data.title + '</h2></div></a>');
     $('.post-card').last().addClass('background' + t);
                     
@@ -158,9 +159,6 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
 
     if(nthChild == 2) {
         card.addClass('half-width');
-    } 
-    else if(nthChild == 1) {
-        card.addClass('full-width');
     } 
     else if(count%nthChild == 0) {
         card.addClass('full-width');
