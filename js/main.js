@@ -1,6 +1,6 @@
 //Other testing
 
-$.fn.extend({
+$.fn.extend({    //create default methods that you want to define
     do: function(callback){
 		return (this.length ? callback : $.noop).call(this, this) || this;
 	},
