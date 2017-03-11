@@ -146,11 +146,16 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
     const length = dataSet.data.children.length;
     const nthChild = findPrimeFactor(length);
     
+    console.log(datum);
+    
     domTarget.append('<a target="_blank" href="' + datum.data.url + '" class="post-card"><div class="info"><h2>' + datum.data.title + '</h2></div></a>');
     $('.post-card').last().addClass('background' + t);
                     
     if(datum.data.preview) {
-        $('.post-card').last().attr('style',  'background: url(' + datum.data.preview.images[0].source.url + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
+        
+        var bgUrl = findBackgroundImg(datum, count);
+        
+        $('.post-card').last().attr('style',  'background: url(' + datum.data/*.preview.images[0].source*/.url + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
     }
     
     var card = $('.post-card').last();
@@ -193,4 +198,16 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
             renderFullPost(domTarget, datum);
         }
     })
+}
+
+var findBackgroundImg = function(datum, i) {
+    if(datum.data.domain.indexOf('imgur') || datum.data.domain.indexOf('redd') || datum.data.domain.indexOf('self')){
+           if(datum.data.domain.indexOf('imgur') && (~datum.data.url.indexOf('gif'))) { 
+                console.log('json object is an imgur gif ' + i);
+           }
+            var bgUrl = datum.data.url; 
+        }
+        else {
+            var bgUrl = datum.data.preview.images[0].source.url;
+        }
 }
