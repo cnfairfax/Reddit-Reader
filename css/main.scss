@@ -63,7 +63,7 @@ nav ul {
 /* Post Cards */
 .post-card {
     display: flex;
-    height: 500px;
+    height: 50%;
     align-items: flex-end;
     justify-content: center;
     background-repeat: no-repeat;
@@ -295,34 +295,18 @@ nav ul {
     font-size: 1em;
     line-height: 1.25em;
     background: #ddd;
-    border-left: 3px solid red;
+    border-left: 3px solid hsl(36,55%,65%);
     min-width: 100%;
     padding: 0 20px;
     margin-top: 20px;
-}
+    $sel: '';
+    @for $i from 2 through 10 {
+        $sel: if($i == 2, '.md', selector-nest($sel,'.md')); // note no !global flag
 
-.full-post-content .md .md {
-    border-left-color: blue;
-}
-
-.full-post-content .md .md .md{
-    border-left-color: green;
-}
-
-.full-post-content .md .md .md .md{
-    border-left-color: orange;
-}
-
-.full-post-content .md .md .md .md .md{
-    border-left-color: purple;
-}
-
-.full-post-content .md .md .md .md .md .md{
-    border-left-color: grey;
-}
-
-.full-post-content .md .md .md .md .md .md .md{
-    border-left-color: yellow;
+        #{$sel} {
+            border-left: 3px solid hsl(36*$i,55%,65%);
+        }
+    }
 }
 
 /*No Preview Image Backgrounds*/

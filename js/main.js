@@ -91,8 +91,9 @@ var renderFullPost = function(domTarget, datum) {
             var fullPostContent = $('.full-post-content');
             
             if(postedContent.data.preview) {
-                var image = postedContent.data.preview;
-                fullPostContent.find('.self-text').append('<div class="post-picture"><img src=' + image.images[0].source.url + '></div>');
+                //var image = postedContent.data.preview;
+                var image = findBackgroundImg(postedContent);
+                fullPostContent.find('.self-text').append('<div class="post-picture"><img src=' + /*image.images[0].source.url*/image + '></div>');
             }
 
             getComments(postComments.data.children, fullPostContent);
@@ -176,7 +177,8 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
         }
                                                 
         $('a.card-cover').off('click').on('click', function(e) { 
-            e.preventDefault(); 
+            e.preventDefault();
+            e.stopPropagation();
             if($(this).hasClass('hidden')) {
                 $(this).removeClass('hidden');
             } 
