@@ -1,14 +1,3 @@
-//Other testing
-
-$.fn.extend({    //create default methods that you want to define
-    do: function(callback){
-		return (this.length ? callback : $.noop).call(this, this) || this;
-	},
-    fire: function(event){
-		return this.trigger(event);
-	}
-});
-
 document.addEventListener('scroll', function (e){
 	$(e.target).fire('event-scroll');
 }, true);
@@ -41,7 +30,11 @@ $(document).ready(function(){
     const navList = $('nav ul');
     
     $.each(subreddits, function(n, p) {
-        navList.append('<li data-reddit="' + p + '" class="navigation' + (n == 0 ? ' selected' : '') + '">' + render(p).name + '</li>');
+        navList.append(templates.nav.render({
+            reddit: p,
+            selected: (n == 0 ? 'selected' : ''),
+            name: _.nav(p).name
+        }));
     });
 
     $('.navigation').click(function(){
@@ -55,13 +48,6 @@ $(document).ready(function(){
 
 });
 
-var render = function(sub) {
-    return {
-        name: '/r ' + sub,
-        url: 'https://www.reddit.com/r/' + sub + '.json'
-    };
-};
-
 var request = function() {
 
     const header = $('header');
@@ -72,7 +58,7 @@ var request = function() {
     var more = after ? '?after=' + after : '';
 
     $.ajax({
-		url: render(nav.data('reddit')).url + more,
+		url: _.nav(nav.data('reddit')).url + more,
 		success: function(json) {
 			if(json.data){
                 if(!after){
@@ -87,18 +73,6 @@ var request = function() {
 		    }
 	    }
     })
-}
-
-var findPrimeFactor = function(n) {
-    var i=2;
-    while (i<=n){
-        if (n%i == 0){
-            n/=i;    
-        }else{
-            i++;
-        }
-    }
-    return i;
 }
 
 var renderFullPost = function(domTarget, datum) {
@@ -144,7 +118,7 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
     var t = (Math.random() * 10) + 1;
     t = Math.floor(t);
     const length = dataSet.data.children.length;
-    const nthChild = findPrimeFactor(length);
+    const nthChild = _.findPrimeFactor(length);
     
     console.log(datum);
     
