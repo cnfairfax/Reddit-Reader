@@ -24,7 +24,8 @@ $(document).ready(function(){
         'iama',
         'baking',
         'tifu',
-        'girls'
+        'girls',
+        'counting'
     ];
 
     const navList = $('nav ul');
