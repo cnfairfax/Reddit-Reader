@@ -129,7 +129,7 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
         
         var bgUrl = findBackgroundImg(datum, count);
         
-        $('.post-card').last().attr('style',  'background: url(' + datum.data/*.preview.images[0].source*/.url + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
+        $('.post-card').last().attr('style',  'background: url(' + bgUrl + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
     }
     
     var card = $('.post-card').last();
@@ -175,13 +175,20 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
 }
 
 var findBackgroundImg = function(datum, i) {
-    if(datum.data.domain.indexOf('imgur') || datum.data.domain.indexOf('redd') || datum.data.domain.indexOf('self')){
-           if(datum.data.domain.indexOf('imgur') && (~datum.data.url.indexOf('gif'))) { 
-                console.log('json object is an imgur gif ' + i);
+       if((~datum.data.url.indexOf('imgur') && (~datum.data.url.indexOf('gif'))) || (~datum.data.url.indexOf('redd') && ~datum.data.url.indexOf('.gif'))) {
+           if(~datum.data.url.indexOf('gifv')){
+            var background = datum.data.url.replace('gifv', 'gif');
            }
-            var bgUrl = datum.data.url; 
+           else {
+            var background = datum.data.url;
+           }
         }
-        else {
-            var bgUrl = datum.data.preview.images[0].source.url;
+        else if(~datum.data.url.indexOf('gfycat') || ~datum.data.url.indexOf('giphy')) {
+            var background = datum.data.preview.images[0].variants.gif.source.url;
         }
+        else 
+        {
+            var background = datum.data.preview.images[0].source.url;
+        }
+    return background;
 }
