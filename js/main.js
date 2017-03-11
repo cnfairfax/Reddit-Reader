@@ -132,19 +132,29 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
     
     //console.log(datum);
     
-    domTarget.append('<a target="_blank" href="' + datum.data.url + '" class="post-card"><div class="info"><h2>' + datum.data.title + '</h2></div></a>');
+    domTarget.append(templates.postCard.render({
+            title: datum.data.title,
+            url: datum.data.url,
+        }));
     $('.post-card').last().addClass('background' + t);
                     
     if(datum.data.preview) {
         
-        var bgUrl = findBackgroundImg(datum, count);
+        var bgUrl = findBackgroundImg(datum);
         
         $('.post-card').last().attr('style',  'background: url(' + bgUrl + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
     }
     
     var card = $('.post-card').last();
                     
-    card.find('.info').append('<div class="post-data"><p><a target="_blank" href="https://www.reddit.com' + datum.data.permalink + '">' + datum.data.num_comments + ' Comments</a></p><p>Posted By: <a target="_blank" href="https://www.reddit.com/u/' + datum.data.author + '">' + datum.data.author + '</a> On <a target="_blank" href="https://www.reddit.com/r/' + datum.data.subreddit + '">' + datum.data.subreddit_name_prefixed +'</a></p><p class="score">' + datum.data.score + '</p></div>');
+    card.find('.info').append(templates.cardInfo.render({
+        commentsLink: datum.data.permalink,
+        commentsNumber: datum.data.num_comments,
+        author: datum.data.author,
+        sub: datum.data.subreddit,
+        prefixedSub: datum.data.subreddit_name_prefixed,
+        score: datum.data.score
+    }));
 
     if(nthChild == 2) {
         card.addClass('half-width');
@@ -184,7 +194,7 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
     })
 }
 
-var findBackgroundImg = function(datum, i) {
+var findBackgroundImg = function(datum) {
        if((~datum.data.url.indexOf('imgur') && (~datum.data.url.indexOf('gif'))) || (~datum.data.url.indexOf('redd') && ~datum.data.url.indexOf('.gif'))) {
            if(~datum.data.url.indexOf('gifv')){
             var background = datum.data.url.replace('gifv', 'gif');
