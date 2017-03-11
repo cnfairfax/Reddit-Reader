@@ -93,14 +93,8 @@ var renderFullPost = function(domTarget, datum) {
                 var image = postedContent.data.preview;
                 fullPostContent.find('.self-text').append('<div class="post-picture"><img src=' + image.images[0].source.url + '></div>');
             }
-            
-            $.each(postComments.data.children, function(count, comment) {
-                var commentTextHtml = (function() {
-                return $('<div></div>').html(comment.data.body_html).text();
-                })();
-                
-                fullPostContent.append(commentTextHtml);
-            });
+
+            getComments(postComments.data.children, fullPostContent);
             
             var fullPost = $('.full-post');
             
@@ -108,11 +102,26 @@ var renderFullPost = function(domTarget, datum) {
                 fullPost.remove();
             });
             
-            console.log(postedContent);
-            console.log(postComments.data.children);
-            }
-        })
+            //console.log(postedContent);
+            //console.log(postComments.data.children);
+        }
+    })
 }
+
+// Recursive method to handle comments
+var getComments = function(comments, parent) {
+    if($.isArray(comments)) {
+        $.each(comments, function(index, comment){
+            parent.append($('<div></div>').html(comment.data.body_html).text());
+            if(comment.data.replies) {
+                getComments(comment.data.replies.data.children, parent.find('.md').last());
+            }
+        });
+    }
+    else {
+        parent.append($('<div></div>').html(comments.data.body_html).text());
+    }
+};
 
 var renderPostCard = function(domTarget, datum, dataSet, count) {
     var t = (Math.random() * 10) + 1;
@@ -120,7 +129,7 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
     const length = dataSet.data.children.length;
     const nthChild = _.findPrimeFactor(length);
     
-    console.log(datum);
+    //console.log(datum);
     
     domTarget.append('<a target="_blank" href="' + datum.data.url + '" class="post-card"><div class="info"><h2>' + datum.data.title + '</h2></div></a>');
     $('.post-card').last().addClass('background' + t);

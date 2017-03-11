@@ -8,4 +8,3 @@ var templates = _.mapObject({
 }, function(template) {
 	return nunjucks.compile(template);
 });
-

@@ -294,11 +294,34 @@ nav ul {
     font-size: 1em;
     line-height: 1.25em;
     background: #ddd;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-left: 3px solid red;
     min-width: 100%;
     padding: 0 20px;
     margin-top: 20px;
+}
+
+.full-post-content .md .md {
+    border-left-color: blue;
+}
+
+.full-post-content .md .md .md{
+    border-left-color: green;
+}
+
+.full-post-content .md .md .md .md{
+    border-left-color: orange;
+}
+
+.full-post-content .md .md .md .md .md{
+    border-left-color: purple;
+}
+
+.full-post-content .md .md .md .md .md .md{
+    border-left-color: grey;
+}
+
+.full-post-content .md .md .md .md .md .md .md{
+    border-left-color: yellow;
 }
 
 /*No Preview Image Backgrounds*/
