@@ -216,7 +216,7 @@ nav ul {
     overflow: scroll;
 }
 
-.full-post i {
+.full-post .close-post {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -349,3 +349,5 @@ nav ul {
 .background10 {
     background: linear-gradient(25deg, #795548, #009688);
 }
+
+@import 'modules/media-queries.scss';
