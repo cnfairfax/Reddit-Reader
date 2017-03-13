@@ -24,41 +24,16 @@ h2 {
     font-weight: 400;
 }
 
+blockquote {
+    margin-left: 0;
+    padding-left: 25px;
+    border-left: 15px solid rgba(125,125,125,0.25);
+    font-style: italic;
+}
+
 /* Nav/Header */
-header {
-    background: #333;
-    position: fixed;
-    width: 15%;
-    padding-top: 20px;
-    height: 100%;
-}
 
-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: #ddd;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 0;
-}
-
-.navigation {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    cursor: pointer;
-}
-
-.selected {
-    border-bottom: 1px solid #fff;
-}
+@import 'modules/nav.scss';
 
 /* Post Cards */
 .post-card {
@@ -296,9 +271,10 @@ nav ul {
     line-height: 1.25em;
     background: #ddd;
     border-left: 3px solid hsl(36,55%,65%);
-    min-width: 100%;
-    padding: 0 20px;
+    width: 100%;
+    padding: 0 0 0 20px;
     margin-top: 20px;
+    word-wrap: break-word;
     $sel: '';
     @for $i from 2 through 10 {
         $sel: if($i == 2, '.md', selector-nest($sel,'.md')); // note no !global flag
@@ -307,6 +283,10 @@ nav ul {
             border-left: 3px solid hsl(36*$i,55%,65%);
         }
     }
+}
+
+.full-post-content > .md {
+    padding-right: 10px;
 }
 
 /*No Preview Image Backgrounds*/

@@ -46,6 +46,14 @@ $(document).ready(function(){
     });   
 
 	request();
+    
+    $('.menu-toggle').off('click').on('click', function(e) {
+        e.preventDefault;
+        $('header').toggleClass('no-show');
+        $('.menu-toggle').toggleClass('fa-times');
+        $('.menu-toggle').toggleClass('fa-bars');
+        console.log(e);
+    })
 
 });
 
