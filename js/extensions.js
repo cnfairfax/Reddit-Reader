@@ -13,7 +13,8 @@ _.mixin({
 	nav: function(sub) {
 		return {
 			name: '/r ' + sub,
-			url: 'https://www.reddit.com/r/' + sub + '.json'
+			url: 'https://www.reddit.com/r/' + sub + '.json',
+            aboutUrl: 'https://www.reddit.com/r/' + sub + '/about.json'
 		};
 	}
 });

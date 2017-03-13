@@ -82,6 +82,20 @@ var request = function() {
 		    }
 	    }
     })
+    
+    requestAbout();
+}
+
+var requestAbout = function(){
+    const nav = $('.navigation.selected');
+    const sidebar = $('.sidebar');
+    
+    $.ajax({
+        url: _.nav(nav.data('reddit')).aboutUrl,
+        success: function(json) {
+            console.log(json);
+        }
+    })
 }
 
 var renderFullPost = function(domTarget, datum) {
