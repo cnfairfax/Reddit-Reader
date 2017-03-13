@@ -77,8 +77,8 @@ var request = function() {
 				$.each(json.data.children, function(i, v) {
                     const info = $('.info');
                     
-                    renderPostCard(content, v, json, i);    
-                })  
+                    renderPostCard(content, v, json, i);
+                })
 		    }
 	    }
     })
