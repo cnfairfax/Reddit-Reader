@@ -26,16 +26,13 @@ nav {
     justify-content: center;
     flex-direction: column;
     color: #333;
-}
-
-.no-show ul, .no-show .nav-title {
-    opacity: 0;
-}
-
-.nav-title {
     opacity: inherit;
     transition: all .25s ease;
     transition-delay: .3s;
+}
+
+.no-show nav {
+    opacity: 0;
 }
 
 nav ul {
@@ -45,9 +42,6 @@ nav ul {
     align-items: center;
     justify-content: space-between;
     padding-left: 0;
-    opacity: inherit;
-    transition: all .25s ease;
-    transition-delay: .3s;
 }
 
 .navigation {
