@@ -98,7 +98,7 @@ var requestAbout = function(){
                 var subRedditDescription = $('<div></div>').html(json.data.public_description_html).text();
                 subBar.empty();
                 subBar.append(templates.sideBar.render({
-                    sideBarTitle: json.data.header_title,
+                    sideBarTitle: json.data.title,
                     sideBarDescription: subRedditDescription
                 }));
                 console.log(json);
