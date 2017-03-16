@@ -1,0 +1,21 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 15%;
+    color: #eee;
+    background: #888;
+    height: 100%;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    
+    h2 {
+        font-family: 'Work Sans', sans-serif;
+        font-size: 2em;
+        font-weight: 900;
+        padding: 20px;
+    }
+}

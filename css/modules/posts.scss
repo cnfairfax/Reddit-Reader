@@ -1,0 +1,112 @@
+.full-post {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 85%;
+    height: 100%;
+    z-index: 1000;
+    background: #eee;
+    overflow: scroll;
+
+    .close-post {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 25px;
+        right: 50px;
+        width: 25px;
+        height: 25px;
+        z-index: 1001;
+        cursor: pointer;
+        background: rgb(229, 217, 197);
+        color: #fff;
+        border-radius: 3px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        transition: all .2s ease;
+
+        &:hover {
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+        }
+    }
+}
+
+.full-post-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    max-width: 900px;
+    margin: auto;
+    color: #121212;
+
+    h2 {
+        font-family: 'Work Sans', sans-serif;
+        margin-top: 25px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid;
+    }
+
+    .self-text, .md {
+        font-family: 'Merriweather';
+    }
+
+    .self-text {
+        border-bottom: 1px solid rgba(0,0,0,0.25);
+        min-width: 100%;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+
+        .md {
+            font-size: 1.1em;
+            line-height: 1.35em;
+            background: none;
+            border: none;
+            padding: 0;
+            border-radius: 0;
+        }
+    }
+}
+
+.post-picture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    img {
+        max-width: 100%;
+    }
+}
+
+/* Comment Styles */
+.full-post-content .md {
+    font-size: 1em;
+    line-height: 1.25em;
+    background: #ddd;
+    border-left: 3px solid hsl(36,55%,65%);
+    width: 100%;
+    padding: 0 0 0 20px;
+    margin-top: 20px;
+    word-wrap: break-word;
+
+    // Generate border colors for nested comments
+    $sel: '';
+    //start with '.md .md' and end with comment nested 10 deep
+    @for $i from 2 through 10 {
+        // define depth of comment, appending '.md' for each new nest layer
+        $sel: if($i == 2, '.md', selector-nest($sel,'.md'));
+        //dynamically generate new color, rotating hue by 36deg for each new layer
+        #{$sel} {
+            border-left: 3px solid hsl(36*$i,55%,65%);
+        }
+    }
+}
+
+.full-post-content > .md {
+    padding-right: 10px;
+}
