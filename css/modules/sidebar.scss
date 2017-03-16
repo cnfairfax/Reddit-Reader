@@ -11,11 +11,34 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    word-break: break-word;
     
     h2 {
         font-family: 'Work Sans', sans-serif;
         font-size: 2em;
         font-weight: 900;
-        padding: 20px;
+        padding: 10px;
+        text-align: center;
+        text-decoration: underline;
+        word-wrap: break-word;
+    }
+
+    .sub-reddit-description {
+        font-family: 'Merriweather', serif;
+        font-size: 1em;
+        line-height: 1.25em;
+        padding: 10px;
+        border: 5px solid;
+        border-radius: 10px;
+        max-width: 92%;
+
+        a {
+            color: #ddd;
+            font-weight: 900;
+
+            &:hover {
+                color: #efefef;
+            }
+        }
     }
 }

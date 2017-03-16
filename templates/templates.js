@@ -1,10 +1,14 @@
 var templates = _.mapObject({
-	nav: `
-		<li data-reddit="{{ reddit }}" class="navigation {{ selected }}">
-			{{ name }}
-		</li>
-	`,
-	fullPost: '',
+	nav:    `<li data-reddit="{{ reddit }}" class="navigation {{ selected }}">
+			    {{ name }}
+		    </li>`,
+	fullPost: `<div class="full-post">
+                    <i class="close-post fa fa-times" title="Close post"></i>
+                    <div class="full-post-content">
+                        <h2>{{ postTitle }}</h2>
+                        <div class="self-text">{{ postText | safe }}</div>
+                    </div>
+                </div>`,
     postCard: ` <a target="_blank" href="{{ url }}" class="post-card">
                     <div class="info">
                         <h2>{{ title }}</h2>
@@ -20,7 +24,9 @@ var templates = _.mapObject({
                     <p class="score">
                         {{ score }}
                     </p>
-                </div>`
+                </div>`,
+    sideBar: `  <h2>{{ sideBarTitle }}</h2>
+                <div class="sub-reddit-description">{{ sideBarDescription | safe }}</div>`
 }, function(template) {
 	return nunjucks.compile(template);
 });

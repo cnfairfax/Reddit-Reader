@@ -43,16 +43,17 @@ $(document).ready(function(){
         $(this).addClass('selected').data('after', '');
         $('.content').scrollTop(0);
         request();
+        requestAbout();
     });   
 
 	request();
+    requestAbout();
     
     $('.menu-toggle').off('click').on('click', function(e) {
         e.preventDefault;
         $('header').toggleClass('no-show');
         $('.menu-toggle').toggleClass('fa-times');
         $('.menu-toggle').toggleClass('fa-bars');
-        console.log(e);
     })
 
 });
@@ -83,19 +84,27 @@ var request = function() {
 	    }
     })
     
-    requestAbout();
+    
 }
 
 var requestAbout = function(){
     const nav = $('.navigation.selected');
     const sidebar = $('.sidebar');
-    
-    $.ajax({
-        url: _.nav(nav.data('reddit')).aboutUrl,
-        success: function(json) {
-            console.log(json);
-        }
-    })
+    if(nav.data('reddit') != 'all') {
+        $.ajax({
+            url: _.nav(nav.data('reddit')).aboutUrl,
+            success: function(json) {
+                var subBar = $('.sidebar');
+                var subRedditDescription = $('<div></div>').html(json.data.public_description_html).text();
+                subBar.empty();
+                subBar.append(templates.sideBar.render({
+                    sideBarTitle: json.data.header_title,
+                    sideBarDescription: subRedditDescription
+                }));
+                console.log(json);
+            }
+        })
+    }
 }
 
 var renderFullPost = function(domTarget, datum) {
@@ -108,14 +117,17 @@ var renderFullPost = function(domTarget, datum) {
                     return $('<div></div>').html(postedContent.data.selftext_html).text();
                 })();
                 
-            domTarget.append('<div class="full-post"><i class="close-post fa fa-times" title="Close post"></i><div class="full-post-content"><h2>' + postedContent.data.title + '</h2><div class="self-text">' + postTextHtml + '</div></div></div>');
+            domTarget.append(templates.fullPost.render({
+                postTitle: postedContent.data.title,
+                postText: postTextHtml
+            }));
             
             var fullPostContent = $('.full-post-content');
             
             if(postedContent.data.preview) {
                 //var image = postedContent.data.preview;
                 var image = findBackgroundImg(postedContent);
-                fullPostContent.find('.self-text').append('<div class="post-picture"><img src=' + /*image.images[0].source.url*/image + '></div>');
+                fullPostContent.find('.self-text').append('<div class="post-picture"><img src=' + image + '></div>');
             }
 
             getComments(postComments.data.children, fullPostContent);
@@ -126,8 +138,6 @@ var renderFullPost = function(domTarget, datum) {
                 fullPost.remove();
             });
             
-            //console.log(postedContent);
-            //console.log(postComments.data.children);
         }
     })
 }
@@ -152,8 +162,6 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
     t = Math.floor(t);
     const length = dataSet.data.children.length;
     const nthChild = _.findPrimeFactor(length);
-    
-    //console.log(datum);
     
     domTarget.append(templates.postCard.render({
             title: datum.data.title,

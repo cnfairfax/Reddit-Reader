@@ -19,6 +19,13 @@ body {
     }
 }
 
+//iterate from h1 through h6, setting line-height
+@for $i from 1 through 6 {
+    h#{$i} {
+        line-height: 1.5em;
+    }
+}
+
 h2 {
     font-weight: 400;
 }
