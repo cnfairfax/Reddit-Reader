@@ -26,7 +26,12 @@ var templates = _.mapObject({
                     </p>
                 </div>`,
     sideBar: `  <h2>{{ sideBarTitle }}</h2>
-                <div class="sub-reddit-description">{{ sideBarDescription | safe }}</div>`
+                <div class="sub-reddit-description">{{ sideBarDescription | safe }}</div>`,
+    image: `<div class="post-picture"><img src={{ picture }}></div>`,
+    warningCard: `<a href="" class="card-cover {{ warning }}">
+                    <p class="warning-type">{{ warningCaps }}!</p>
+                    <p class="subreddit">{{ subreddit }}</p>
+                </a>`
 }, function(template) {
 	return nunjucks.compile(template);
 });
