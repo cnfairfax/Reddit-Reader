@@ -59,6 +59,11 @@
         right: 0;
         background: $dark-accent;
         box-shadow: inset -2px 0px 4px -1px rgba(0,0,0,.3);
+        transition: background .5s ease;
+
+        &:hover {
+            background: lighten($dark-accent, 2%);
+        }
     }
 }
 

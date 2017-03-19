@@ -118,10 +118,15 @@ var renderFullPost = function(domTarget, datum) {
             var postTextHtml = (function() {
                     return $('<div></div>').html(postedContent.data.selftext_html).text();
                 })();
+
+            console.log(postComments);
+            console.log(postedContent);
                 
             domTarget.append(templates.fullPost.render({
                 postTitle: postedContent.data.title,
-                postText: postTextHtml
+                postText: postTextHtml,
+                author: postedContent.data.author,
+                score: postedContent.data.score,
             }));
             
             var fullPostContent = $('.full-post-content');
@@ -150,14 +155,24 @@ var renderFullPost = function(domTarget, datum) {
 var getComments = function(comments, parent) {
     if($.isArray(comments)) {
         $.each(comments, function(index, comment){
-            parent.append($('<div></div>').html(comment.data.body_html).text());
+            parent.append(templates.comment.render({
+                commentHtml: $('<div></div>').html(comment.data.body_html).text(),
+                author: comment.data.author,
+                score: comment.data.score,
+                timeSince: comment.data.created
+            }));
             if(comment.data.replies) {
-                getComments(comment.data.replies.data.children, parent.find('.md').last());
+                getComments(comment.data.replies.data.children, parent.find('.comment').last());
             }
         });
     }
     else {
-        parent.append($('<div></div>').html(comments.data.body_html).text());
+        parent.append(templates.comment.render({
+            commentHtml: $('<div></div>').html(comments.data.body_html).text(),
+            author: comments.data.author,
+            score: comments.data.score,
+            timeSince: comments.data.created
+        }));
     }
 };
 

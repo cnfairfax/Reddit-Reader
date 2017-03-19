@@ -8,6 +8,10 @@ var templates = _.mapObject({
                         <div class="self-post">
                             <h2>{{ postTitle }}</h2>
                             <div class="self-text">{{ postText | safe }}</div>
+                            <div class="post-info">
+                                <p class="post-author"><a href="https://www.reddit.com/u/{{ author }}">{{ author }}</a></p>
+                                <p class="post-stats">{{ score }} points</p>
+                            </div>
                         </div>
                     </div>
                 </div>`,
@@ -33,7 +37,14 @@ var templates = _.mapObject({
     warningCard: `<a href="" class="card-cover {{ warning }}">
                     <p class="warning-type">{{ warningCaps }}!</p>
                     <p class="subreddit">{{ subreddit }}</p>
-                </a>`
+                </a>`,
+    comment: `  <div class="comment">
+                    <div class="comment-info">
+                        <p class="comment-author"><a href="https://www.reddit.com/u/{{ author }}" target="_blank">{{ author }}</a></p>
+                        <p class="comment-stats">{{ score }} points</p>
+                    </div>
+                    {{ commentHtml | safe }}
+                </div>`
 }, function(template) {
 	return nunjucks.compile(template);
 });
