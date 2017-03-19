@@ -39,11 +39,11 @@ var templates = _.mapObject({
                     <p class="subreddit">{{ subreddit }}</p>
                 </a>`,
     comment: `  <div class="comment">
+                    {{ commentHtml | safe }}
                     <div class="comment-info">
                         <p class="comment-author"><a href="https://www.reddit.com/u/{{ author }}" target="_blank">{{ author }}</a></p>
                         <p class="comment-stats">{{ score }} points</p>
                     </div>
-                    {{ commentHtml | safe }}
                 </div>`
 }, function(template) {
 	return nunjucks.compile(template);

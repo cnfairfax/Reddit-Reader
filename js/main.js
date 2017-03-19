@@ -126,7 +126,7 @@ var renderFullPost = function(domTarget, datum) {
                 postTitle: postedContent.data.title,
                 postText: postTextHtml,
                 author: postedContent.data.author,
-                score: postedContent.data.score,
+                score: postedContent.data.score
             }));
             
             var fullPostContent = $('.full-post-content');
@@ -155,14 +155,18 @@ var renderFullPost = function(domTarget, datum) {
 var getComments = function(comments, parent) {
     if($.isArray(comments)) {
         $.each(comments, function(index, comment){
-            parent.append(templates.comment.render({
-                commentHtml: $('<div></div>').html(comment.data.body_html).text(),
-                author: comment.data.author,
-                score: comment.data.score,
-                timeSince: comment.data.created
-            }));
-            if(comment.data.replies) {
-                getComments(comment.data.replies.data.children, parent.find('.comment').last());
+            if(comment.data.body_html){
+                parent.append(templates.comment.render({
+                    commentHtml: $('<div></div>').html(comment.data.body_html).text(),
+                    author: comment.data.author,
+                    score: comment.data.score,
+                    timeSince: comment.data.created
+                }));
+                if(comment.data.replies) {
+                    if(comment.data.replies.data.children[0].data.body_html){
+                    getComments(comment.data.replies.data.children, parent.find('.comment').last());
+                    }
+                }
             }
         });
     }
