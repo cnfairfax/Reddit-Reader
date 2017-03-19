@@ -1,17 +1,21 @@
 /*
-Error: Undefined variable: "$secondary-text".
-        on line 39 of C:\Users\JDMPC1\Documents\reddit-app\css\modules\universals.scss
+Error: Undefined variable: "$primary-text".
+        on line 31 of C:\Users\JDMPC1\Documents\reddit-app\css\modules\nav.scss
 
-34: blockquote {
-35:     margin-left: 0;
-36:     padding-left: 25px;
-37:     border-left: 15px solid rgba(125,125,125,0.25);
-38:     font-style: italic;
-39:     color: $secondary-text;
-40: }
+26: nav {
+27:     display: flex;
+28:     align-items: center;
+29:     justify-content: center;
+30:     flex-direction: column;
+31:     color: $primary-text;
+32:     opacity: inherit;
+33:     transition: all .25s ease;
+34:     transition-delay: .5s;
+35: }
+36: 
 
 Backtrace:
-C:\Users\JDMPC1\Documents\reddit-app\css\modules\universals.scss:39
+C:\Users\JDMPC1\Documents\reddit-app\css\modules\nav.scss:31
 C:/Program Files (x86)/Koala/rubygems/gems/sass-3.4.9/lib/sass/script/tree/variable.rb:49:in `_perform'
 C:/Program Files (x86)/Koala/rubygems/gems/sass-3.4.9/lib/sass/script/tree/node.rb:50:in `perform'
 C:/Program Files (x86)/Koala/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:384:in `visit_prop'
@@ -58,4 +62,4 @@ C:/Program Files (x86)/Koala/bin/sass:18:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined variable: \"$secondary-text\".\A         on line 39 of C:\Users\JDMPC1\Documents\reddit-app\css\modules\universals.scss\A \A 34: blockquote {\A 35:     margin-left: 0;\A 36:     padding-left: 25px;\A 37:     border-left: 15px solid rgba(125,125,125,0.25);\A 38:     font-style: italic;\A 39:     color: $secondary-text;\A 40: }"; }
+  content: "Error: Undefined variable: \"$primary-text\".\A         on line 31 of C:\Users\JDMPC1\Documents\reddit-app\css\modules\nav.scss\A \A 26: nav {\A 27:     display: flex;\A 28:     align-items: center;\A 29:     justify-content: center;\A 30:     flex-direction: column;\A 31:     color: $primary-text;\A 32:     opacity: inherit;\A 33:     transition: all .25s ease;\A 34:     transition-delay: .5s;\A 35: }\A 36: "; }

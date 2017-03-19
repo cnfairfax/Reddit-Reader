@@ -4,18 +4,26 @@
 
 body {
     height: 100%;
+    overflow-x: hidden;
 
     &, .content {
         margin: 0;
         display: flex;
         flex-wrap: wrap;
+        transition: width .75s ease, margin-left .75s ease;
     }
 
     .content {
-        width: 85%;
-        margin-left: 15%;
-        overflow-y: auto;
+        width: 75%;
+        margin-left: 25%;
         position: relative;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    &.sidebar-no-show .content{
+        width: 100%;
+        margin-left: 25px;
     }
 }
 
@@ -35,4 +43,5 @@ blockquote {
     padding-left: 25px;
     border-left: 15px solid rgba(125,125,125,0.25);
     font-style: italic;
+    color: $secondary-text;
 }

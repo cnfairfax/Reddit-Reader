@@ -19,13 +19,9 @@ $(document).ready(function(){
         'pics',
         'aww',
         'gifs',
-        'blackpeopletwitter',
         'reformed',
         'iama',
-        'baking',
-        'tifu',
-        'girls',
-        'counting'
+        'thebachelor'
     ];
 
     const navList = $('nav ul');
@@ -48,12 +44,12 @@ $(document).ready(function(){
 
 	request();
     requestAbout();
-    
-    $('.menu-toggle').off('click').on('click', function(e) {
+
+    $('.sidebar-toggle').off('click').on('click', function(e) {
         e.preventDefault;
-        $('header').toggleClass('no-show');
-        $('.menu-toggle').toggleClass('fa-times');
-        $('.menu-toggle').toggleClass('fa-bars');
+        $('body').toggleClass('sidebar-no-show');
+        $('.sidebar-toggle').toggleClass('fa-chevron-left');
+        $('.sidebar-toggle').toggleClass('fa-chevron-right');
     })
 
 });
@@ -89,13 +85,12 @@ var request = function() {
 
 var requestAbout = function(){
     const nav = $('.navigation.selected');
-    const sidebar = $('.sidebar');
+    const subBar = $('.about-sub');
     if(nav.data('reddit') != 'all') {
         $.ajax({
             url: _.nav(nav.data('reddit')).aboutUrl,
             success: function(json) {
-                var subBar = $('.sidebar');
-                var subRedditDescription = $('<div></div>').html(json.data.public_description_html).text();
+                const subRedditDescription = $('<div></div>').html(json.data.public_description_html).text();
                 subBar.empty();
                 subBar.append(templates.sideBar.render({
                     sideBarTitle: json.data.title,
@@ -104,6 +99,13 @@ var requestAbout = function(){
                 console.log(json);
             }
         })
+    }
+    else {
+        subBar.empty();
+        subBar.append(templates.sideBar.render({
+            sideBarTitle: 'Write r/all sidebar copy',
+            sideBarDescription: 'I need to flesh this out a bit...'
+        }));
     }
 }
 

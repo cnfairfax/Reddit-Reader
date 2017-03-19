@@ -1,17 +1,20 @@
+/* Variables */
+@import 'modules/_variables.scss';
+
 /* Universals */
-@import 'modules/universals.scss';
+@import 'modules/_universals.scss';
 
 /* Nav/Header */
-@import 'modules/nav.scss';
+@import 'modules/_nav.scss';
 
 /* Sidebar */
-@import 'modules/sidebar.scss';
+@import 'modules/_sidebar.scss';
 
 /* Post Cards */
-@import 'modules/cards.scss';
+@import 'modules/_cards.scss';
 
 /* Self Posts */
-@import 'modules/posts.scss';
+@import 'modules/_posts.scss';
 
 /* Media Queries */
-@import 'modules/media-queries.scss';
+@import 'modules/_media-queries.scss';

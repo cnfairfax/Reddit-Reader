@@ -1,5 +1,5 @@
 /* Post Cards */
-.post-card {
+.post-card{
     display: flex;
     height: 50%;
     align-items: flex-end;
@@ -8,13 +8,14 @@
     background-size: cover;
     background-position: center;
     text-decoration: none;
-    color: #efefef;
+    color: $secondary-text;
     font-family: 'Work Sans', sans-serif;
     font-weight: 400;
-    padding: 2.5% 5%;
-    box-shadow: inset rgba(250,250,250,0) 5px 5px 10px, inset rgba(250,250,250,0) -5px -5px 10px;
+    padding: 0;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
     transition: all 0.5s ease;
     overflow: hidden;
+    transform-origin: center;
 
     &.full-width {
         width: 100%;
@@ -25,8 +26,15 @@
     }
 }
 
-.post-card:hover, .card-cover:hover {
-    box-shadow: inset rgba(250,250,250,0.6) 5px 5px 10px, inset rgba(250,250,250,0.6) -5px -5px 10px;
+.post-card:hover {
+    position: relative;
+    box-shadow: 0 7px 10px rgba(0,0,0,0.5);
+    transform: scale(1.0075) translateX(2px);
+    z-index: 10;
+}
+
+.post-card:active {
+    box-shadow: 0 -5px 0 rgba(0,0,0,0);
 }
 
 /* information about posts */
@@ -37,10 +45,14 @@
     justify-content: center;
     text-align: center;
     padding: 20px;
-    background: rgba(30,50,70,0.35);
+    background: rgba(250,250,250,1);
     min-width: 100%;
-    border-radius: 3px;
     transition: all 0.5s ease;
+    box-shadow: 0 -1px 10px rgba(0,0,0,0.5);
+
+    h2 {
+        color: $primary-text;
+    }
 
     .post-data {
         display: flex;
@@ -59,19 +71,18 @@
 
     a {
         text-decoration: none;
-        color: #dedede;
+        color: $primary-text;
         line-height: 2em;
         transition: all .2s ease;
 
         &:hover {
-            color: #ccc;
             text-decoration: underline;
         }
     }
 }
 
 .post-card:hover .info {
-    background: rgba(30,50,70,0.7);
+    background: rgba(250,250,250,0.8);
 }
 
 /* Status Changes (blurred, nsfw, spoiler, etc) */
@@ -90,17 +101,18 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top right, rgba(43, 40, 50, 0.95) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.9) 60%);
+    background: linear-gradient(to top right, rgba(207, 210, 200, 0.95) 0%, rgba(167, 166, 151, 0.8) 45%, rgba(181, 173, 159, 0.9) 60%);
+    box-shadow: 0 1px 5px rgba(0,0,0,0);
     z-index: 3;
     transform: translateY(0);
     transition: all 0.5s ease;
     text-decoration: none;
-    color: #efefef;
+    color: $primary-text;
 
     &:after {
         content: '';
         position: absolute;
-        background: linear-gradient(-19deg, rgba(43,40,50,0.95) 0%, rgba(43,40,50,0.9) 46%, rgba(0,0,0,0.75) 50%);
+        background: linear-gradient(-19deg, rgba(207, 210, 200,0.95) 0%, rgba(207, 210, 200,0.9) 46%, rgba(250,250,250,0.75) 50%);
         top: 0;
         right: 0;
         width: 100%;
@@ -111,7 +123,7 @@
 
     .warning-type {
         padding: 20px;
-        border: 2px solid rgba(250,250,250,1);
+        border: 2px solid rgba(50,50,50,1);
         transition: all .5s ease;
     }
 
@@ -124,13 +136,22 @@
 
 .hidden {
     height: 10%;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 3px 3px;
     right: 25%;
     width: 50%;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.3);
+
+    &:hover {
+        box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+    }
+
+    &:active {
+        box-shadow: 0 0 0 rgba(0,0,0,0.3);
+    }
 
     .warning-type {
         padding: 0;
-        border-color: rgba(250,250,250,0);
+        border-color: rgba(50,50,50,0);
     }
 
     .subreddit {

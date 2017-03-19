@@ -5,8 +5,10 @@ var templates = _.mapObject({
 	fullPost: `<div class="full-post">
                     <i class="close-post fa fa-times" title="Close post"></i>
                     <div class="full-post-content">
-                        <h2>{{ postTitle }}</h2>
-                        <div class="self-text">{{ postText | safe }}</div>
+                        <div class="self-post">
+                            <h2>{{ postTitle }}</h2>
+                            <div class="self-text">{{ postText | safe }}</div>
+                        </div>
                     </div>
                 </div>`,
     postCard: ` <a target="_blank" href="{{ url }}" class="post-card">
