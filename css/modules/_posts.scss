@@ -53,6 +53,7 @@
     flex-direction: column;
     max-width: 900px;
     color: $primary-text;
+    padding-bottom: 20px;
 
     .self-post {
         width: 100%;
@@ -118,7 +119,7 @@
     background: #fff;
     border-left: 3px solid hsl(36,55%,65%);
     width: 100%;
-    padding: 0 0 0 20px;
+    padding: 0 0 5px 20px;
     margin-top: 20px;
     word-wrap: break-word;
 
