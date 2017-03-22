@@ -34,7 +34,9 @@
 }
 
 .post-card:active {
-    box-shadow: 0 -5px 0 rgba(0,0,0,0);
+    box-shadow: 0 14px 20px rgba(0,0,0,0.5);
+    transform: scale(1.01) translateX(2px);
+    transition: all 0.05s;
 }
 
 /* information about posts */
@@ -146,7 +148,7 @@
     }
 
     &:active {
-        box-shadow: 0 0 0 rgba(0,0,0,0.3);
+        box-shadow: 0 6px 30px rgba(0,0,0,0.3);
     }
 
     .warning-type {
