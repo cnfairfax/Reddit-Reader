@@ -72,8 +72,6 @@ var request = function() {
                 }
                 nav.data('after', json.data.after);
 				$.each(json.data.children, function(i, v) {
-                    const info = $('.info');
-                    
                     renderPostCard(content, v, json, i);
                 })
 		    }
