@@ -8,7 +8,7 @@
 		private function map($map, $handler) {
 			$new = [];
 			foreach($map as $k => $v) {
-				$new[$k] = 'foobar';//$handler($v);
+				$new[$k] = $handler($v);
 			}
 			return $new;
 		}

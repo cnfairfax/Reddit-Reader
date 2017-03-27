@@ -22,6 +22,7 @@
 		$key = function($class){
 			return __DIR__.'-'.$class;
 		};
+
 		if (!apcu_exists($key($class)) || !@include(apcu_fetch($key($class)))){
 
 			foreach([
@@ -44,41 +45,29 @@
 				require($file);
 			}
 			else{
-				throw new Exception(sprintf('Class was not found: %s', $class));
+				throw new Exception('Class was not found: ' . $class);
 			}
 		}
 	});
 
 	$request = explode('?', $_SERVER['REQUEST_URI']);
 
-	/*$temp_params = explode('&', $request[1]) ?: [];
-
-	$params = [];
-
-	if($temp_params) {
-		foreach($temp_params as $tp) {
-			$key_value = explode('=', $tp);
-			$params[$key_value[0]] = $key_value[1];
-		}
-	}*/
-
-	// echo json_encode($_REQUEST);die;
-
 	//Build custom route path
-	$file = str_replace('/api/', __DIR__ . '/app/', $request[0]) . '.php';
+	$path = str_replace('/api/', __DIR__ . '/app/', $request[0]) . '.php';
 
 	//Test that file exists if not throw new exception
-	if(file_exists($file)) {
-		if(strpos(file_get_contents($file), 'new class') !== false){
+	if(file_exists($path)) {
+		if(strpos(file_get_contents($path), 'new class') !== false){
 
-			$route = require_once($file);
+			//Get file, setup request object, and clean request data
+			$route = require_once($path);
 			$route->request = new Request($_REQUEST);
 
-			// if($response = $route->run($route->request)) {
-			// 	echo json_encode($response);
-			// } else {
-			// 	throw new Exception('It appears this route doesn\'t do anything');
-			// }
+			if($response = $route->run($route->request)) {
+				echo json_encode($response);
+			} else {
+				throw new Exception('It appears this route doesn\'t do anything');
+			}
 		}
 	} else {
 		throw new Exception('This route doesn\'t exist');
