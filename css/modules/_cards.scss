@@ -24,19 +24,19 @@
     &.half-width {
         width: 50%;
     }
-}
 
-.post-card:hover {
-    position: relative;
-    box-shadow: 0 7px 10px rgba(0,0,0,0.5);
-    transform: scale(1.0075) translateX(2px);
-    z-index: 10;
-}
+    &:hover {
+        position: relative;
+        box-shadow: 0 7px 10px rgba(0,0,0,0.5);
+        transform: scale(1.0075) translateX(2px);
+        z-index: 10;
+    }
 
-.post-card:active {
-    box-shadow: 0 14px 20px rgba(0,0,0,0.5);
-    transform: scale(1.01) translateX(2px);
-    transition: all 0.05s;
+    &:active {
+        box-shadow: 0 14px 20px rgba(0,0,0,0.5);
+        transform: scale(1.01) translateX(2px);
+        transition: all 0.05s;
+    }
 }
 
 /* information about posts */
