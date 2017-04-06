@@ -9,13 +9,6 @@ _.mixin({
 			}
 		}
 		return i;
-	},
-	nav: function(sub) {
-		return {
-			name: '/r ' + sub,
-			url: 'https://www.reddit.com/r/' + sub + '.json',
-            aboutUrl: 'https://www.reddit.com/r/' + sub + '/about.json'
-		};
 	}
 });
 

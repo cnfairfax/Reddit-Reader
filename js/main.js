@@ -30,7 +30,7 @@ $(document).ready(function(){
         navList.append(templates.nav.render({
             reddit: p,
             selected: (n == 0 ? 'selected' : ''),
-            name: _.nav(p).name
+            name: 'r/ ' + p
         }));
     });
 
@@ -61,11 +61,13 @@ var request = function() {
     const nav = $('.navigation.selected');
     const after = nav.data('after');
 
-    var more = after ? '?after=' + after : '';
+    var more = after ? after : null;
 
     $.ajax({
-		url: _.nav(nav.data('reddit')).url + more,
+		url: '/api/posts/index',
+        data: {sub: nav.data('reddit'), after: more},
 		success: function(json) {
+            json = JSON.parse(json);
 			if(json.data){
                 if(!after){
                     content.empty();
@@ -77,8 +79,6 @@ var request = function() {
 		    }
 	    }
     })
-    
-    
 }
 
 var requestAbout = function(){
@@ -86,15 +86,16 @@ var requestAbout = function(){
     const subBar = $('.about-sub');
     if(nav.data('reddit') != 'all') {
         $.ajax({
-            url: _.nav(nav.data('reddit')).aboutUrl,
+            url: '/api/subreddit/about',
+            data: {sub: nav.data('reddit')},
             success: function(json) {
+                json = JSON.parse(json);
                 const subRedditDescription = $('<div></div>').html(json.data.public_description_html).text();
                 subBar.empty();
                 subBar.append(templates.sideBar.render({
                     sideBarTitle: json.data.title,
                     sideBarDescription: subRedditDescription
                 }));
-                console.log(json);
             }
         })
     }
@@ -109,8 +110,10 @@ var requestAbout = function(){
 
 var renderFullPost = function(domTarget, datum) {
     $.ajax ({
-        url: 'https://www.reddit.com' + datum.data.permalink + '.json',
+        url: '/api/posts/get',
+        data: {link: datum.data.permalink},
         success: function(post) {
+            post = JSON.parse(post);
             var postedContent = post[0].data.children[0];
             var postComments = post[1];
             var postTextHtml = (function() {
@@ -262,7 +265,7 @@ var renderPostCard = function(domTarget, datum, dataSet, count) {
             renderFullPost(domTarget, datum);
         }
     })
-}
+};
 
 // determine media type to properly display gifs inline
 var findBackgroundImg = function(datum) {
@@ -286,4 +289,4 @@ var findBackgroundImg = function(datum) {
             var background = datum.data.preview.images[0].source.url;
         }
     return background;
-}
+};
