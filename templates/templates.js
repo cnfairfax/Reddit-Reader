@@ -1,7 +1,7 @@
 var templates = _.mapObject({
-	nav:    `<li data-reddit="{{ reddit }}" class="navigation {{ selected }}">
+	nav:    `<option value="{{ reddit }}">
 			    {{ name }}
-		    </li>`,
+		    </option>`,
 	fullPost: `<div class="full-post">
                     <i class="close-post fa fa-times" title="Close post"></i>
                     <div class="full-post-content">

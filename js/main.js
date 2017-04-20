@@ -24,7 +24,7 @@ $(document).ready(function(){
         'thebachelor'
     ];
 
-    const navList = $('nav ul');
+    const navList = $('nav select');
     
     $.each(subreddits, function(n, p) {
         navList.append(templates.nav.render({
@@ -34,9 +34,7 @@ $(document).ready(function(){
         }));
     });
 
-    $('.navigation').click(function(){
-        $('.navigation').removeClass('selected');
-        $(this).addClass('selected').data('after', '');
+    $('nav select').change(function(){
         $('.content').scrollTop(0);
         request();
         requestAbout();
@@ -58,14 +56,14 @@ var request = function() {
 
     const header = $('header');
     const content = $('body .content');
-    const nav = $('.navigation.selected');
+    const nav = $('nav select');
     const after = nav.data('after');
 
     var more = after ? after : null;
 
     $.ajax({
 		url: '/api/posts/index',
-        data: {sub: nav.data('reddit'), after: more},
+        data: {sub: nav.val(), after: more},
 		success: function(json) {
             json = JSON.parse(json);
 			if(json.data){
@@ -82,12 +80,12 @@ var request = function() {
 }
 
 var requestAbout = function(){
-    const nav = $('.navigation.selected');
+    const nav = $('nav select');
     const subBar = $('.about-sub');
-    if(nav.data('reddit') != 'all') {
+    if(nav.val() != 'all') {
         $.ajax({
             url: '/api/subreddit/about',
-            data: {sub: nav.data('reddit')},
+            data: {sub: nav.val()},
             success: function(json) {
                 json = JSON.parse(json);
                 const subRedditDescription = $('<div></div>').html(json.data.public_description_html).text();
