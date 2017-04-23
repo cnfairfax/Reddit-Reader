@@ -44,6 +44,10 @@ var templates = _.mapObject({
                         <p class="comment-author"><a href="https://www.reddit.com/u/{{ author }}" target="_blank">{{ author }}</a></p>
                         <p class="comment-stats">{{ score }} points</p>
                     </div>
+                </div>`,
+    loader: `   <div class="loader">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
                 </div>`
 }, function(template) {
 	return nunjucks.compile(template);

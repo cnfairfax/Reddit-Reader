@@ -34,13 +34,7 @@ $(document).ready(function(){
         }));
     });
 
-    $('nav select').change(function(){
-        $('.content').scrollTop(0);
-        request();
-        requestAbout();
-    });   
-
-	request();
+    request();
     requestAbout();
 
     $('.sidebar-toggle').off('click').on('click', function(e) {
@@ -49,6 +43,12 @@ $(document).ready(function(){
         $('.sidebar-toggle').toggleClass('fa-chevron-left');
         $('.sidebar-toggle').toggleClass('fa-chevron-right');
     })
+
+    $('nav select').change(function(){
+        $('.content').scrollTop(0);
+        request();
+        requestAbout();
+    });
 
 });
 
@@ -64,6 +64,10 @@ var request = function() {
     $.ajax({
 		url: '/api/posts/index',
         data: {sub: nav.val(), after: more},
+        beforeSend: function() {
+                content.empty();
+                content.append(templates.loader.render());
+            },
 		success: function(json) {
             json = JSON.parse(json);
 			if(json.data){
@@ -74,6 +78,7 @@ var request = function() {
 				$.each(json.data.children, function(i, v) {
                     renderPostCard(content, v, json, i);
                 })
+                console.log('made it here');
 		    }
 	    }
     })
@@ -86,6 +91,10 @@ var requestAbout = function(){
         $.ajax({
             url: '/api/subreddit/about',
             data: {sub: nav.val()},
+            beforeSend: function() {
+                subBar.empty();
+                subBar.append(templates.loader.render());
+            },
             success: function(json) {
                 json = JSON.parse(json);
                 const subRedditDescription = $('<div></div>').html(json.data.public_description_html).text();

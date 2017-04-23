@@ -6,7 +6,7 @@
     color: $text;
     background: $accent;
     height: 100%;
-    padding-top: 50px;
+    padding-top: 30px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -17,9 +17,11 @@
     
     .about-sub {
         width: 80%;
-        padding: 20px;
+        height: 40%;
+        padding: 0 20px;
         margin-right: 25px;
         background: $dark-accent;
+        overflow-y: scroll;
 
         h2 {
             font-family: 'Work Sans', sans-serif;
