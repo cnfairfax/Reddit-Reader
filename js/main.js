@@ -126,9 +126,6 @@ var renderFullPost = function(domTarget, datum) {
             var postTextHtml = (function() {
                     return $('<div></div>').html(postedContent.data.selftext_html).text();
                 })();
-
-            console.log(postComments);
-            console.log(postedContent);
                 
             domTarget.append(templates.fullPost.render({
                 postTitle: postedContent.data.title,
