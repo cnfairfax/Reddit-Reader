@@ -46,6 +46,7 @@ $(document).ready(function(){
 
     $('nav select').change(function(){
         $('.content').scrollTop(0);
+        $(this).data('after', '');
         request();
         requestAbout();
     });
@@ -65,9 +66,9 @@ var request = function() {
 		url: '/api/posts/index',
         data: {sub: nav.val(), after: more},
         beforeSend: function() {
-                content.empty();
-                content.append(templates.loader.render());
-            },
+            content.empty();
+            content.append(templates.loader.render());
+        },
 		success: function(json) {
             json = JSON.parse(json);
 			if(json.data){
@@ -78,7 +79,6 @@ var request = function() {
 				$.each(json.data.children, function(i, v) {
                     renderPostCard(content, v, json, i);
                 })
-                console.log('made it here');
 		    }
 	    }
     })
