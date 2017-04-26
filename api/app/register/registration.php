@@ -20,7 +20,7 @@
                     $new_pw = trim($request->password);
 
                     // Check to make sure username isn't already in use
-                    $check_query = "SELECT username, password FROM users WHERE username='" . $new_user . "'";
+                    $check_query = "SELECT `username`, `password` FROM `users` WHERE `username`='" . $new_user . "'";
                     $get_check = @mysqli_query($conn, $check_query);
                     $check_rows = @mysqli_fetch_assoc($get_check);
 
@@ -35,10 +35,9 @@
                         mysqli_stmt_execute($insert_user);
 
                         $affected_rows = @mysqli_stmt_affected_rows($insert_user);
-                        print_r($affected_rows);
-                        //if($affected_rows == 1) {
-                            return json_encode("User, $new_user added!")
-                        //}
+                        if($affected_rows == 1) {
+                            return json_encode("User, $new_user added!");
+                        }
                     }
                     else {
                         return json_encode("User, $new_user already exists");
