@@ -1,13 +1,7 @@
 <?
     return new class {
         function run($request) {
-            $DB_HOST = 'localhost';
-            $DB_USER = 'root';
-            $DB_PASS = '';
-            $DB_NAME = 'reddit_data';
-
-            // Create connection
-            $conn = @mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+            require_once('../api/app/mysqli_connection.php');
 
             $method = $_SERVER['REQUEST_METHOD'];
             
@@ -35,10 +29,16 @@
                         mysqli_stmt_execute($insert_user);
 
                         $affected_rows = @mysqli_stmt_affected_rows($insert_user);
-                        print_r($affected_rows);
-                        //if($affected_rows == 1) {
-                            return json_encode("User, $new_user added!")
-                        //}
+
+                        if($affected_rows == 1) {
+                            return json_encode("User, $new_user added!");
+                        }
+                        else if($affected_rows == 0) {
+                            return json_encode("User, $new_user already exists!");
+                        }
+                        else {
+                            return json_encode("Weird things happened");
+                        }
                     }
                     else {
                         return json_encode("User, $new_user already exists");
