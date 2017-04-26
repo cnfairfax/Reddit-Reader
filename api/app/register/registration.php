@@ -14,7 +14,7 @@
                     $new_pw = trim($request->password);
 
                     // Check to make sure username isn't already in use
-                    $check_query = "SELECT username, password FROM users WHERE username='" . $new_user . "'";
+                    $check_query = "SELECT `username`, `password` FROM `users` WHERE `username`='" . $new_user . "'";
                     $get_check = @mysqli_query($conn, $check_query);
                     $check_rows = @mysqli_fetch_assoc($get_check);
 
