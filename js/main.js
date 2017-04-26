@@ -51,6 +51,11 @@ $(document).ready(function(){
         requestAbout();
     });
 
+    $('#register').click( function(e) {
+        e.preventDefault;
+        registerNewUser();
+    });
+
 });
 
 var request = function() {
@@ -66,8 +71,10 @@ var request = function() {
 		url: '/api/posts/index',
         data: {sub: nav.val(), after: more},
         beforeSend: function() {
-            content.empty();
-            content.append(templates.loader.render());
+            if(!after) {
+                content.empty();
+                content.append(templates.loader.render());
+            }
         },
 		success: function(json) {
             json = JSON.parse(json);
@@ -294,3 +301,14 @@ var findBackgroundImg = function(datum) {
         }
     return background;
 };
+
+var registerNewUser = function() {
+    $.ajax({
+        url: 'api/register/registration',
+        type: 'POST',
+        data: { email: $('#email').val(), password: $('#password').val()},
+        success: function(json) {
+            console.log(json);
+        }
+    })
+}
