@@ -36,7 +36,7 @@ _.mixin({
 					}
 					nav.data('after', json.data.after);
 					$.each(json.data.children, function(i, v) {
-						content.renderPostCard(content, v, json, i);
+						content.renderPostCard(v, json, i);
 					})
 				}
 			}
@@ -115,156 +115,164 @@ $.fn.extend({    //create default methods that you want to define
 		return this.trigger(event);
 	},
 	// render subreddit posts
-	renderPostCard: function(domTarget, datum, dataSet, count) {
-		var t = (Math.random() * 10) + 1;
-		t = Math.floor(t);
-		const length = dataSet.data.children.length;
-		const nthChild = _.findPrimeFactor(length);
-		
-		// render basic card
-		domTarget.append(templates.postCard.render({
-				title: datum.data.title,
-				url: datum.data.url,
-			}));
-
-		// cache rendered card for each loop - more efficient than repeated $('')
-		var card = $('.post-card').last();
-		
-		//set default background using generated random number between 1 & 10
-		card.last().addClass('background' + t);
-
-		//check for preview image       
-		if(datum.data.preview) {
-			var bgUrl = _.findBackgroundImg(datum);
-			//define background image inline
-			card.last().attr('style',  'background: url(' + bgUrl + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
-		}
-
-		// render detailed card info                
-		card.find('.info').append(templates.cardInfo.render({
-			commentsLink: datum.data.permalink,
-			commentsNumber: datum.data.num_comments,
-			author: datum.data.author,
-			sub: datum.data.subreddit,
-			prefixedSub: datum.data.subreddit_name_prefixed,
-			score: datum.data.score
-		}));
-
-		// assign width-defining class based on prime factor (nthChild) of length of dataset.data.children 
-		if(nthChild == 2) {
-			card.addClass('half-width');
-		} 
-		else if(count%nthChild == 0) {
-			card.addClass('full-width');
-		} 
-		else {
-			card.addClass('half-width');
-		}
-
-		//check nsfw or spoiler bools           
-		if(datum.data.over_18 || datum.data.spoiler) {
-			card.addClass('spoiler-nsfw');
-			var warningType = '';
-			//if statement discerns between nsfw & spoiler
-			if(datum.data.spoiler) {
-				warningType = 'spoiler';
-			} 
-			else if(datum.data.over_18) {
-				warningType = 'nsfw';
-			}
-
-			//use template to cover post
-			card.append(templates.warningCard.render({
-				warning: warningType,
-				warningCaps: warningType.toUpperCase(),
-				subreddit: datum.data.subreddit_name_prefixed
-			}));
-
-			//click to hide/show card cover                             
-			$('a.card-cover').off('click').on('click', function(e) { 
-				e.preventDefault();
-				//keep higher-level click events from firing
-				e.stopPropagation();
-				//hide/unhide card cover
-				$(this).toggleClass('hidden');
-			})
-		}
-
-		//render full post over .content on click
-		card.off('click').on('click', function(e) {
-			//only render if domain contains self or redd
-			if(datum.data.domain.indexOf('self') || datum.data.domain.indexOf('redd')) {
-				e.preventDefault();
-				domTarget.renderFullPost(domTarget, datum);
-			}
-		})
-	},
-	renderFullPost: function(domTarget, datum) {
-		$.ajax ({
-			url: '/api/posts/get',
-			data: {link: datum.data.permalink},
-			success: function(post) {
-				post = JSON.parse(post);
-				var postedContent = post[0].data.children[0];
-				var postComments = post[1];
-				var postTextHtml = (function() {
-						return $('<div></div>').html(postedContent.data.selftext_html).text();
-					})();
-					
-				domTarget.append(templates.fullPost.render({
-					postTitle: postedContent.data.title,
-					postText: postTextHtml,
-					author: postedContent.data.author,
-					score: postedContent.data.score
+	renderPostCard: function(datum, dataSet, count) {
+		var target = this;
+		return this.each(function(){
+			var t = (Math.random() * 10) + 1;
+			t = Math.floor(t);
+			const length = dataSet.data.children.length;
+			const nthChild = _.findPrimeFactor(length);
+			
+			// render basic card
+			target.append(templates.postCard.render({
+					title: datum.data.title,
+					url: datum.data.url,
 				}));
-				
-				var fullPostContent = $('.full-post-content');
-				
-				// Doe this post have an image that can be displayed?
-				if(postedContent.data.preview) {
-					//rendering image to post with nunjucks template
-					fullPostContent.find('.self-text').append(templates.image.render({
-						picture: _.findBackgroundImg(postedContent)
-					})/*'<div class="post-picture"><img src=' + image + '></div>'*/);
+
+			// cache rendered card for each loop - more efficient than repeated $('')
+			var card = $('.post-card').last();
+			
+			//set default background using generated random number between 1 & 10
+			card.last().addClass('background' + t);
+
+			//check for preview image       
+			if(datum.data.preview) {
+				var bgUrl = _.findBackgroundImg(datum);
+				//define background image inline
+				card.last().attr('style',  'background: url(' + bgUrl + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
+			}
+
+			// render detailed card info                
+			card.find('.info').append(templates.cardInfo.render({
+				commentsLink: datum.data.permalink,
+				commentsNumber: datum.data.num_comments,
+				author: datum.data.author,
+				sub: datum.data.subreddit,
+				prefixedSub: datum.data.subreddit_name_prefixed,
+				score: datum.data.score
+			}));
+
+			// assign width-defining class based on prime factor (nthChild) of length of dataset.data.children 
+			if(nthChild == 2) {
+				card.addClass('half-width');
+			} 
+			else if(count%nthChild == 0) {
+				card.addClass('full-width');
+			} 
+			else {
+				card.addClass('half-width');
+			}
+
+			//check nsfw or spoiler bools           
+			if(datum.data.over_18 || datum.data.spoiler) {
+				card.addClass('spoiler-nsfw');
+				var warningType = '';
+				//if statement discerns between nsfw & spoiler
+				if(datum.data.spoiler) {
+					warningType = 'spoiler';
+				} 
+				else if(datum.data.over_18) {
+					warningType = 'nsfw';
 				}
 
-				fullPostContent.getComments(postComments.data.children, fullPostContent);
-				
-				var fullPost = $('.full-post');
-				
-				fullPost.find('.close-post').off('click').on('click', function(evt) {
-					fullPost.remove();
-				});
-				
+				//use template to cover post
+				card.append(templates.warningCard.render({
+					warning: warningType,
+					warningCaps: warningType.toUpperCase(),
+					subreddit: datum.data.subreddit_name_prefixed
+				}));
+
+				//click to hide/show card cover                             
+				$('a.card-cover').off('click').on('click', function(e) { 
+					e.preventDefault();
+					//keep higher-level click events from firing
+					e.stopPropagation();
+					//hide/unhide card cover
+					$(this).toggleClass('hidden');
+				})
 			}
-		})
+
+			//render full post over .content on click
+			card.off('click').on('click', function(e) {
+				//only render if domain contains self or redd
+				if(datum.data.domain.indexOf('self') || datum.data.domain.indexOf('redd')) {
+					e.preventDefault();
+					target.renderFullPost(datum);
+				}
+			})
+		});
+	},
+	renderFullPost: function(datum) {
+		var target = this;
+		return this.each(function(){
+			$.ajax ({
+				url: '/api/posts/get',
+				data: {link: datum.data.permalink},
+				success: function(post) {
+					post = JSON.parse(post);
+					var postedContent = post[0].data.children[0];
+					var postComments = post[1];
+					var postTextHtml = (function() {
+							return $('<div></div>').html(postedContent.data.selftext_html).text();
+						})();
+					target.append(templates.fullPost.render({
+						postTitle: postedContent.data.title,
+						postText: postTextHtml,
+						author: postedContent.data.author,
+						score: postedContent.data.score
+					}));
+					
+					var fullPostContent = $('.full-post-content');
+					
+					// Doe this post have an image that can be displayed?
+					if(postedContent.data.preview) {
+						//rendering image to post with nunjucks template
+						fullPostContent.find('.self-text').append(templates.image.render({
+							picture: _.findBackgroundImg(postedContent)
+						})/*'<div class="post-picture"><img src=' + image + '></div>'*/);
+					}
+
+					fullPostContent.getComments(postComments.data.children);
+					
+					var fullPost = $('.full-post');
+					
+					fullPost.find('.close-post').off('click').on('click', function(evt) {
+						fullPost.remove();
+					});
+					
+				}
+			})
+		});
 	},
 	// Recursively handle comments
-	getComments: function(comments, parent) {
-		if($.isArray(comments)) {
-			$.each(comments, function(index, comment){
-				if(comment.data.body_html){
-					parent.append(templates.comment.render({
-						commentHtml: $('<div></div>').html(comment.data.body_html).text(),
-						author: comment.data.author,
-						score: comment.data.score,
-						timeSince: comment.data.created
-					}));
-					if(comment.data.replies) {
-						if(comment.data.replies.data.children[0].data.body_html){
-						parent.find('.comment').last().getComments(comment.data.replies.data.children, parent.find('.comment').last());
+	getComments: function(comments) {
+		var target = this;
+		return this.each(function(){
+			if($.isArray(comments)) {
+				$.each(comments, function(index, comment){
+					if(comment.data.body_html){
+						target.append(templates.comment.render({
+							commentHtml: $('<div></div>').html(comment.data.body_html).text(),
+							author: comment.data.author,
+							score: comment.data.score,
+							timeSince: comment.data.created
+						}));
+						if(comment.data.replies) {
+							if(comment.data.replies.data.children[0].data.body_html){
+							target.find('.comment').last().getComments(comment.data.replies.data.children);
+							}
 						}
 					}
-				}
-			});
-		}
-		else {
-			parent.append(templates.comment.render({
-				commentHtml: $('<div></div>').html(comments.data.body_html).text(),
-				author: comments.data.author,
-				score: comments.data.score,
-				timeSince: comments.data.created
-			}));
-		}
+				});
+			}
+			else {
+				target.append(templates.comment.render({
+					commentHtml: $('<div></div>').html(comments.data.body_html).text(),
+					author: comments.data.author,
+					score: comments.data.score,
+					timeSince: comments.data.created
+				}));
+			}
+		});
 	}
 });
