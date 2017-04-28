@@ -10,6 +10,30 @@ _.mixin({
 		}
 		return i;
 	},
+	requestSubList: function() {
+		const navList = $('nav select');
+
+		return $.ajax({
+			async: false,
+			url: '/api/sublists/default',
+			data: {where: 'popular'},
+			success: function(subs) {
+				subs = JSON.parse(subs);
+				navList.append(templates.nav.render({
+					reddit: 'all',
+					selected: 'selected',
+					name: 'r/ All'
+				}));
+				$.each(subs.data.children, function(i, sub) {
+					navList.append(templates.nav.render({
+						reddit: sub.data.display_name,
+						selected: /*(i == 0 ? 'selected' : */'',//),
+						name: 'r/ ' + sub.data.display_name
+					}));
+				});
+			}
+		})
+	},
 	request: function() {
 
 		const header = $('header');
@@ -105,6 +129,10 @@ _.mixin({
 			}
 		})
 	}
+});
+
+$.extend({
+	// Move things in here 
 });
 
 $.fn.extend({    //create default methods that you want to define
@@ -245,6 +273,7 @@ $.fn.extend({    //create default methods that you want to define
 		});
 	},
 	// Recursively handle comments
+	// Pass in 'options' object w/ all required arguments. Document what goes in options object.
 	getComments: function(comments) {
 		var target = this;
 		return this.each(function(){

@@ -1,3 +1,11 @@
+// handle imgur galleries
+// handle external links
+// collapse comments - class animation transition
+// collect all default subreddits - almost there
+// style registration & make change for login
+// TIMEBOXED - 4hrs, refactor/make notes on refactoring registration.php - query class, database class
+
+
 document.addEventListener('scroll', function (e){
 	$(e.target).fire('event-scroll');
 }, true);
@@ -14,28 +22,9 @@ $(document).on('event-scroll', function(e) {
 
 $(document).ready(function(){
 
-    const subreddits = [
-        'all',
-        'pics',
-        'aww',
-        'gifs',
-        'reformed',
-        'iama',
-        'thebachelor'
-    ];
-
-    const navList = $('nav select');
-    
-    $.each(subreddits, function(n, p) {
-        navList.append(templates.nav.render({
-            reddit: p,
-            selected: (n == 0 ? 'selected' : ''),
-            name: 'r/ ' + p
-        }));
-    });
-
-    _.request();
-    _.requestAbout();
+    //_.requestSubList();
+    //$.when(_.requestSubList).done(_.request());
+    $.when(_.requestSubList(), _.request()).done(_.requestAbout());
 
     $('.sidebar-toggle').off('click').on('click', function(e) {
         e.preventDefault;
