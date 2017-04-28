@@ -31,17 +31,6 @@ var templates = _.mapObject({
                         </div>
                     </div>
                 </div>`,
-    /*cardInfo: ` <div class="post-data">
-                    <p>
-                        <a target="_blank" href="https://www.reddit.com{{ commentsLink }}">{{ commentsNumber }} Comments</a>
-                    </p>
-                    <p>
-                        Posted By: <a target="_blank" href="https://www.reddit.com/u/{{ author }}">{{ author }}</a> On <a target="_blank" href="https://www.reddit.com/r/{{ sub }}">{{ prefixedSub }}</a>
-                    </p>
-                    <p class="score">
-                        {{ score }}
-                    </p>
-                </div>`,*/
     sideBar: `  <h2>{{ sideBarTitle }}</h2>
                 <div class="sub-reddit-description">{{ sideBarDescription | safe }}</div>`,
     image: `<div class="post-picture"><img src={{ picture }}></div>`,

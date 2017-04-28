@@ -176,16 +176,6 @@ $.fn.extend({    //create default methods that you want to define
 				card.last().attr('style',  'background: url(' + bgUrl + '); background-repeat: no-repeat; background-size: cover; background-position: center;')
 			}
 
-			// render detailed card info                
-			/*card.find('.info').append(templates.cardInfo.render({
-				commentsLink: datum.data.permalink,
-				commentsNumber: datum.data.num_comments,
-				author: datum.data.author,
-				sub: datum.data.subreddit,
-				prefixedSub: datum.data.subreddit_name_prefixed,
-				score: datum.data.score
-			}));*/
-
 			// assign width-defining class based on prime factor (nthChild) of length of dataset.data.children 
 			if(nthChild == 2) {
 				card.addClass('half-width');

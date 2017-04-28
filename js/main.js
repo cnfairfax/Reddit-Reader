@@ -1,9 +1,11 @@
-// handle imgur galleries
-// handle external links
-// collapse comments - class animation transition
-// collect all default subreddits - almost there
-// style registration & make change for login
-// TIMEBOXED - 4hrs, refactor/make notes on refactoring registration.php - query class, database class
+// SATURDAY handle imgur galleries
+// SUNDAY handle external links
+// FRIDAY MORNING collapse comments - class animation transition
+// FRIDAY MORNING collect all default subreddits - almost there TOP PRIORITY - FINISH
+// - double check $.when - do we want that? try just listing functions in order instead
+// FRIDAY style registration & make change for login
+// SATURDAY update mobile styles - get sidebar working on mobile
+// SUNDAY TIMEBOXED - 4hrs, refactor/make notes on refactoring registration.php - query class, database class
 
 
 document.addEventListener('scroll', function (e){
