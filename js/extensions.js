@@ -284,7 +284,20 @@ $.fn.extend({    //create default methods that you want to define
 						}));
 						if(comment.data.replies) {
 							if(comment.data.replies.data.children[0].data.body_html){
-							target.find('.comment').last().getComments(comment.data.replies.data.children);
+								var lastComment = target.find('.comment').last();
+								lastComment.prepend(templates.commentHide.render({}));
+								var commentHider = $('.comment-hide').last();
+								commentHider.click(function(){
+									commentHider.toggleClass('fa-level-down');
+									commentHider.toggleClass('fa-level-up');
+									if(commentHider.hasClass('fa-level-down')) {
+										lastComment.addClass('collapsed');
+									}
+									else if(commentHider.hasClass('fa-level-up')) {
+										lastComment.removeClass('collapsed');
+									}
+								});
+								lastComment.getComments(comment.data.replies.data.children);
 							}
 						}
 					}

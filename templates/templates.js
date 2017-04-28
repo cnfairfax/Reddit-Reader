@@ -48,7 +48,8 @@ var templates = _.mapObject({
     loader: `   <div class="loader">
                     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                     <span class="sr-only">Loading...</span>
-                </div>`
+                </div>`,
+    commentHide: `<i class="fa fa-level-up comment-hide"></i>`
 }, function(template) {
 	return nunjucks.compile(template);
 });

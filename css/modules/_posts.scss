@@ -114,6 +114,7 @@
 
 /* Comment Styles */
 .full-post-content .comment {
+    position: relative;
     font-size: 1em;
     line-height: 1.25em;
     background: #fff;
@@ -122,6 +123,7 @@
     padding: 0 0 5px 20px;
     margin-top: 20px;
     word-wrap: break-word;
+    transition: all .25s;
 
     // Generate border colors for nested comments
     $sel: '';
@@ -133,6 +135,23 @@
         #{$sel} {
             border-left: 3px solid hsl(36*$i,55%,65%);
         }
+    }
+
+    .md {
+        padding-top: 0.5px;
+    }
+
+    .comment-hide {
+        position: absolute;
+        top: 11px;
+        left: 5px;
+    }
+
+    &.collapsed > .comment {
+        height: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
     }
 
     .comment-info {

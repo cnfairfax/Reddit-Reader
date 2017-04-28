@@ -4,6 +4,12 @@
     }
 }
 
+@media (max-width: 1250px) {
+    .full-post-content {
+        max-width: 95%;
+    }
+}
+
 @media (max-width: 500px) {
     /* Body */
     body .content {
@@ -29,7 +35,29 @@
     
     /* Sidebar */
     .sidebar {
-        display: none;
+        z-index: 1;
+        width: 100%;
+        height: 90%;
+
+        .sidebar-toggle {
+            width: 100%;
+            height: 25px;
+            top: 95.5%;
+            right: 0;
+            z-index: 1;
+            box-shadow: inset 0px -2px 4px -1px rgba(0,0,0,0.3);
+        }
+    }
+
+    .sidebar-no-show .sidebar {
+        top: -90%;
+        left: 0;
+        transform: translateY(25px);
+    }
+
+    body.sidebar-no-show .content {
+        margin-left: 0;
+        margin-top: 25px;
     }
     
     /* Post Cards */
