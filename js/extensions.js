@@ -155,6 +155,12 @@ $.fn.extend({    //create default methods that you want to define
 			target.append(templates.postCard.render({
 					title: datum.data.title,
 					url: datum.data.url,
+					commentsLink: datum.data.permalink,
+					commentsNumber: datum.data.num_comments,
+					author: datum.data.author,
+					sub: datum.data.subreddit,
+					prefixedSub: datum.data.subreddit_name_prefixed,
+					score: datum.data.score
 				}));
 
 			// cache rendered card for each loop - more efficient than repeated $('')
@@ -171,14 +177,14 @@ $.fn.extend({    //create default methods that you want to define
 			}
 
 			// render detailed card info                
-			card.find('.info').append(templates.cardInfo.render({
+			/*card.find('.info').append(templates.cardInfo.render({
 				commentsLink: datum.data.permalink,
 				commentsNumber: datum.data.num_comments,
 				author: datum.data.author,
 				sub: datum.data.subreddit,
 				prefixedSub: datum.data.subreddit_name_prefixed,
 				score: datum.data.score
-			}));
+			}));*/
 
 			// assign width-defining class based on prime factor (nthChild) of length of dataset.data.children 
 			if(nthChild == 2) {
